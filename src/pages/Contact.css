@@ -1,0 +1,129 @@
+.page-hero {
+  padding: 34px 22px;
+  color: #fff;
+  background:
+    linear-gradient(90deg, rgba(7, 26, 58, 0.96), rgba(7, 26, 58, 0.82)),
+    url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85')
+      center / cover;
+}
+
+.eyebrow {
+  color: var(--brand-gold-light);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.page-hero h1 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  margin: 0 0 8px;
+}
+
+.page-hero p {
+  color: #dbe2ed;
+  font-size: 14px;
+}
+
+.contact-card,
+.contact-form {
+  background: #fff;
+  margin: 16px 18px;
+  border: 1px solid var(--brand-border);
+  border-radius: 18px;
+  padding: 22px;
+  box-shadow: 0 8px 25px rgba(7, 26, 58, 0.06);
+}
+
+.contact-card h2,
+.contact-form h2 {
+  font-family: var(--font-display);
+  color: var(--brand-navy);
+  font-size: 21px;
+  margin: 0 0 16px;
+}
+
+.contact-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.contact-item ion-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #f3eddc;
+  color: #987315;
+  font-size: 18px;
+  padding: 10px;
+  flex: none;
+}
+
+.contact-item strong {
+  display: block;
+  color: var(--brand-navy);
+  font-size: 14px;
+}
+
+.contact-item a,
+.contact-item span {
+  color: var(--brand-muted);
+  font-size: 13.5px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 13px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  margin-top: 8px;
+}
+
+.btn-gold {
+  background: var(--brand-gold);
+  color: var(--brand-navy);
+}
+
+.full-width {
+  width: 100%;
+}
+
+.office {
+  margin-top: 18px;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--brand-navy);
+  color: #fff;
+  font-size: 13.5px;
+}
+
+.office strong {
+  color: var(--brand-gold-light);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.submit-btn {
+  margin-top: 16px;
+  --border-radius: 12px;
+  font-weight: 700;
+}
+
+.admin-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  color: var(--brand-muted);
+  font-size: 12.5px;
+  padding: 6px 0 26px;
+  opacity: 0.6;
+}

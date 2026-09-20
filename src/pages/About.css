@@ -1,0 +1,120 @@
+.page-hero {
+  padding: 34px 22px;
+  color: #fff;
+  background:
+    linear-gradient(90deg, rgba(7, 26, 58, 0.96), rgba(7, 26, 58, 0.82)),
+    url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=85')
+      center / cover;
+}
+
+.eyebrow {
+  color: var(--brand-gold-light);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.page-hero h1 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  margin: 0 0 8px;
+}
+
+.page-hero p {
+  color: #dbe2ed;
+  font-size: 14px;
+}
+
+.section {
+  padding: 32px 22px;
+}
+
+.section-kicker {
+  color: #9c7a12;
+  text-transform: uppercase;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+}
+
+.section h2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  color: var(--brand-navy);
+  margin: 0 0 12px;
+}
+
+.muted {
+  color: var(--brand-muted);
+  font-size: 14.5px;
+  margin-bottom: 14px;
+}
+
+.feature-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.feature {
+  background: #fff;
+  border: 1px solid var(--brand-border);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.feature ion-icon {
+  font-size: 24px;
+  color: #a17a12;
+  margin-bottom: 6px;
+}
+
+.feature h3 {
+  color: var(--brand-navy);
+  margin: 0 0 5px;
+  font-size: 16px;
+}
+
+.feature p {
+  color: var(--brand-muted);
+  font-size: 13.5px;
+  margin: 0;
+}
+
+.cta {
+  background: linear-gradient(135deg, var(--brand-navy), var(--brand-navy-2));
+  color: #fff;
+  border-radius: 22px;
+  padding: 30px 22px;
+}
+
+.cta h2 {
+  color: #fff;
+  font-size: 22px;
+  margin: 0 0 8px;
+}
+
+.cta p {
+  color: #dce2ec;
+  font-size: 14px;
+  margin-bottom: 18px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 12px 20px;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+}
+
+.btn-gold {
+  background: var(--brand-gold);
+  color: var(--brand-navy);
+}

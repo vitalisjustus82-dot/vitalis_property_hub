@@ -1,0 +1,57 @@
+/* Vitalis Property Hub — brand theme
+   Mapped 1:1 from the original site's palette:
+   navy #071a3a / gold #d6ad38 / cream #f8f7f2 */
+
+:root {
+  --brand-navy: #071a3a;
+  --brand-navy-2: #0b2550;
+  --brand-navy-deep: #041329;
+  --brand-gold: #d6ad38;
+  --brand-gold-light: #f1d77b;
+  --brand-cream: #f8f7f2;
+  --brand-text: #182235;
+  --brand-muted: #687286;
+  --brand-border: #e6e8ed;
+  --brand-shadow: 0 18px 45px rgba(7, 26, 58, 0.13);
+  --brand-radius: 18px;
+
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', Arial, sans-serif;
+
+  /* Primary = gold (CTAs), Secondary = navy (headers/tab bar) */
+  --ion-color-primary: #d6ad38;
+  --ion-color-primary-rgb: 214, 173, 56;
+  --ion-color-primary-contrast: #071a3a;
+  --ion-color-primary-contrast-rgb: 7, 26, 58;
+  --ion-color-primary-shade: #bc9831;
+  --ion-color-primary-tint: #dab44c;
+
+  --ion-color-secondary: #071a3a;
+  --ion-color-secondary-rgb: 7, 26, 58;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #061733;
+  --ion-color-secondary-tint: #20304e;
+
+  --ion-background-color: #f8f7f2;
+  --ion-background-color-rgb: 248, 247, 242;
+  --ion-text-color: #182235;
+  --ion-text-color-rgb: 24, 34, 53;
+
+  --ion-toolbar-background: #071a3a;
+  --ion-toolbar-color: #ffffff;
+  --ion-tab-bar-background: #071a3a;
+  --ion-tab-bar-color: #9aa6bd;
+  --ion-tab-bar-color-selected: #f1d77b;
+
+  --ion-font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.ion-color-secondary {
+  --ion-color-base: var(--ion-color-secondary);
+  --ion-color-base-rgb: var(--ion-color-secondary-rgb);
+  --ion-color-contrast: var(--ion-color-secondary-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-secondary-contrast-rgb);
+  --ion-color-shade: var(--ion-color-secondary-shade);
+  --ion-color-tint: var(--ion-color-secondary-tint);
+}
