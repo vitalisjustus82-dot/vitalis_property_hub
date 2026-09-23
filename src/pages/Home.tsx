@@ -4,6 +4,12 @@ import {
   IonPage,
   IonSpinner,
   IonIcon,
+  IonButton,
+  IonButtons,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardTitle,
 } from '@ionic/react';
 import { logoWhatsapp, callOutline, checkmarkCircle } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
