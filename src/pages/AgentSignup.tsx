@@ -1,156 +1,86 @@
-import { IonPage, IonContent, IonInput, IonButton } from "@ionic/react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
+import { IonPage, IonContent, IonInput } from '@ionic/react';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
-const AgentLogin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const AgentSignup = () => {
+  const [form, setForm] = useState({
+    fullName: '',
+    phone: '',
+    whatsapp: '',
+    email: '',
+    password: ''
+  });
 
   return (
     <IonPage>
-      <IonContent fullscreen style={{ "--background": "#0F1E3A" } as any}>
-        <style>{`
-          .lux-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: #0F1E3A; }
-          .lux-card { display: flex; width: 100%; max-width: 850px; border-radius: 18px; overflow: hidden; background: white; }
-          .lux-left { flex: 1; background: #0F1E3A; padding: 35px; color: white; display: flex; flex-direction: column; justify-content: center; }
-          .lux-right { flex: 1; padding: 30px; background: white; }
-          
-          /* MOBILE - THIS FIXES YOUR SCREENSHOT CUT */
-          @media (max-width: 768px) {
-            .lux-wrapper { padding: 15px; align-items: flex-start; padding-top: 25px; }
-            .lux-card { flex-direction: column; width: 100%; max-width: 100%; }
-            .lux-left { padding: 22px; }
-            .lux-right { padding: 22px; }
-          }
-        `}</style>
-
-        <div className="lux-wrapper">
-          <div className="lux-card">
-            <div className="lux-left">
-              <div
-                style={{
-                  color: "#E7C873",
-                  letterSpacing: "2px",
-                  fontSize: "10px",
-                  fontWeight: "700",
-                }}
-              >
-                VITALIS PROPERTY HUB
-              </div>
-              <h1
-                style={{
-                  fontSize: "30px",
-                  margin: "12px 0 0 0",
-                  fontWeight: "800",
-                  lineHeight: "1.2",
-                }}
-              >
-                Welcome Back,
-                <br />
-                <span style={{ color: "#E7C873" }}>Agent</span>
+      <IonContent fullscreen style={{ '--background': '#0F1E3A' } as any}>
+        <div style={{
+          minHeight: '100vh',
+          background: '#0F1E3A',
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '20px 15px'
+        }}>
+          <div style={{
+            width: '100%',
+            maxWidth: '400px',
+            borderRadius: '20px',
+            overflow: 'hidden',
+            height: 'fit-content',
+            background: 'white'
+          }}>
+            {/* TOP - Welcome */}
+            <div style={{
+              background: '#0F1E3A',
+              padding: '30px 25px',
+              color: 'white'
+            }}>
+              <div style={{ color: '#E7C873', letterSpacing: '2px', fontSize: '10px', fontWeight: '700' }}>VITALIS PROPERTY HUB</div>
+              <h1 style={{ fontSize: '28px', margin: '12px 0 0 0', fontWeight: '800', lineHeight: '1.2' }}>
+                Become a<br/><span style={{ color: '#E7C873' }}>Verified Agent</span>
               </h1>
-              <p
-                style={{
-                  opacity: 0.7,
-                  marginTop: "12px",
-                  fontSize: "13px",
-                  lineHeight: "1.5",
-                }}
-              >
-                Manage your listings, connect with clients, and grow your real
-                estate business in Calabar.
+              <p style={{ opacity: 0.7, margin: '12px 0 0 0', fontSize: '13px', lineHeight: '1.4' }}>
+                Join Vitalis Property Hub and start listing apartments in Calabar.
               </p>
             </div>
 
-            <div className="lux-right">
-              <h2 style={{ color: "#0F1E3A", fontWeight: "800", margin: 0 }}>
-                Agent Login
-              </h2>
-              <p
-                style={{
-                  color: "#888",
-                  fontSize: "11px",
-                  margin: "6px 0 18px 0",
-                }}
-              >
-                Enter your credentials to continue
-              </p>
+            {/* DOWN - Signup Form */}
+            <div style={{ background: 'white', padding: '25px' }}>
+              <h2 style={{ color: '#0F1E3A', fontWeight: '800', margin: '0 0 5px 0', fontSize: '20px' }}>Agent Signup</h2>
+              <p style={{ color: '#888', fontSize: '12px', margin: '0 0 18px 0' }}>Create your agent account</p>
 
-              <IonInput
-                placeholder="Email Address"
-                value={email}
-                onIonChange={(e) => setEmail(e.detail.value!)}
-                style={{
-                  border: "1.5px solid #E6E6E6",
-                  borderRadius: "8px",
-                  padding: "4px 10px",
-                  marginBottom: "10px",
-                  fontSize: "14px",
-                }}
-              />
-              <IonInput
-                placeholder="Password"
-                type="password"
-                value={password}
-                onIonChange={(e) => setPassword(e.detail.value!)}
-                style={{
-                  border: "1.5px solid #E6E6E6",
-                  borderRadius: "8px",
-                  padding: "4px 10px",
-                  marginBottom: "16px",
-                  fontSize: "14px",
-                }}
-              />
+              <IonInput placeholder="Full Name" value={form.fullName} onIonChange={e => setForm({...form, fullName: e.detail.value!})} style={{ border: '1.5px solid #E5E5E5', borderRadius: '10px', padding: '4px 12px', marginBottom: '10px', fontSize: '14px' }} />
+              <IonInput placeholder="Phone Number" value={form.phone} onIonChange={e => setForm({...form, phone: e.detail.value!})} style={{ border: '1.5px solid #E5E5E5', borderRadius: '10px', padding: '4px 12px', marginBottom: '10px', fontSize: '14px' }} />
+              <IonInput placeholder="WhatsApp Number" value={form.whatsapp} onIonChange={e => setForm({...form, whatsapp: e.detail.value!})} style={{ border: '1.5px solid #E5E5E5', borderRadius: '10px', padding: '4px 12px', marginBottom: '10px', fontSize: '14px' }} />
+              <IonInput placeholder="Email Address" value={form.email} onIonChange={e => setForm({...form, email: e.detail.value!})} style={{ border: '1.5px solid #E5E5E5', borderRadius: '10px', padding: '4px 12px', marginBottom: '10px', fontSize: '14px' }} />
+              <IonInput placeholder="Password" type="password" value={form.password} onIonChange={e => setForm({...form, password: e.detail.value!})} style={{ border: '1.5px solid #E5E5E5', borderRadius: '10px', padding: '4px 12px', marginBottom: '18px', fontSize: '14px' }} />
 
-              {/* SOLID GOLD BUTTON - NOT FADED */}
+              {/* GOLD BUTTON BLACK TEXT */}
               <button
                 style={{
-                  width: "100%",
-                  height: "44px",
-                  background: "#E7C873",
-                  color: "#000000",
-                  border: "none",
-                  borderRadius: "8px",
-                  fontWeight: "800",
-                  fontSize: "14px",
-                  cursor: "pointer",
+                  width: '100%',
+                  height: '48px',
+                  background: '#E7C873',
+                  color: '#000000',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontWeight: '800',
+                  fontSize: '15px',
+                  cursor: 'pointer'
                 }}
               >
-                Login
+                Create Account
               </button>
 
-              <div
-                style={{
-                  textAlign: "center",
-                  marginTop: "16px",
-                  fontSize: "12px",
-                  color: "#333",
-                }}
-              >
-                Don't have an account?
-                <Link
-                  to="/agent/register"
-                  style={{
-                    color: "#C19A4B",
-                    fontWeight: "800",
-                    textDecoration: "none",
-                    marginLeft: "4px",
-                  }}
-                >
-                  Register
+              <div style={{ textAlign: 'center', marginTop: '18px', fontSize: '13px', color: '#333' }}>
+                Already have an account?
+                <Link to="/agent/login" style={{ color: '#E7C873', fontWeight: '800', textDecoration: 'none', marginLeft: '5px' }}>
+                  Login
                 </Link>
               </div>
-              <div style={{ textAlign: "center", marginTop: "10px" }}>
-                <Link
-                  to="/home"
-                  style={{
-                    fontSize: "11px",
-                    color: "#999",
-                    textDecoration: "none",
-                  }}
-                >
-                  ← Back to Home
-                </Link>
+
+              <div style={{ textAlign: 'center', marginTop: '12px' }}>
+                <Link to="/home" style={{ fontSize: '11px', color: '#999', textDecoration: 'none' }}>← Back to Home</Link>
               </div>
             </div>
           </div>
@@ -160,4 +90,4 @@ const AgentLogin = () => {
   );
 };
 
-export default AgentLogin;
+export default AgentSignup;
