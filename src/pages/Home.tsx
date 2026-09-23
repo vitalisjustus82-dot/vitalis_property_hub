@@ -48,16 +48,17 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        <div style={{ 
+      <div style={{ 
   position: 'absolute', 
   top: '15px', 
-  left: '15px', 
+  right: '15px', 
   zIndex: 100 
 }}>
   <IonButton 
     routerLink="/agent/login" 
     size="small"
-    style={{ textTransform: 'capitalize' }}
+    color="warning"
+    style={{ textTransform: 'capitalize', fontWeight: 'bold' }}
   >
     Register As Agent
   </IonButton>
