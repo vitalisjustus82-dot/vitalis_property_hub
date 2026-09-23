@@ -48,6 +48,20 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
+        <div style={{ 
+  position: 'absolute', 
+  top: '15px', 
+  left: '15px', 
+  zIndex: 100 
+}}>
+  <IonButton 
+    routerLink="/agent/login" 
+    size="small"
+    style={{ textTransform: 'capitalize' }}
+  >
+    Register As Agent
+  </IonButton>
+</div>
         {/* HERO */}
         <section className="hero">
           <div className="eyebrow">Vitalis Property Hub</div>
@@ -55,12 +69,6 @@ const Home: React.FC = () => {
             Hi, I'm <span>Vitalis Justus Chiadi</span>
           </h1>
           <div style={{display:'flex', gap:'10px', marginTop:'15px'}}>
-  <IonButton routerLink="/register" fill="outline" size="small" style={{'--border-radius':'20px'}}>
-    Register as User
-  </IonButton>
-  <IonButton routerLink="/agent/register" size="small" style={{'--background':'#f9d26a', '--color':'black', '--border-radius':'20px', fontWeight:'bold'}}>
-    Register as Agent
-  </IonButton>
 </div>
           <p>
             <strong>Founder of Vitalis Property Hub</strong>
