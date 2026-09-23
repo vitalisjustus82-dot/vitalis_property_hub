@@ -115,3 +115,66 @@ values
     false, 'available'
   )
 on conflict do nothing;
+
+
+
+
+
+
+-- AGENT PROFILES (private contact)
+create table agents (
+  id uuid primary key references auth.users(id) on delete cascade,
+  full_name text not null,
+  phone_number text not null, -- PRIVATE, only admin can see
+  whatsapp_number text,
+  email text,
+  is_verified boolean default false,
+  avg_rating decimal default 0,
+  total_ratings int default 0,
+  created_at timestamp default now()
+);
+
+-- APARTMENTS (linked to agent)
+create table apartments (
+  id uuid primary key default gen_random_uuid(),
+  agent_id uuid references agents(id) on delete cascade,
+  title text not null,
+  location text not null,
+  price decimal not null,
+  description text,
+  images text[] default '{}', -- array of image urls
+  video_url text,
+  status text default 'pending', -- pending, approved, rented
+  created_at timestamp default now()
+);
+
+-- RATINGS (user rates agent after dealing)
+create table agent_ratings (
+  id uuid primary key default gen_random_uuid(),
+  agent_id uuid references agents(id) on delete cascade,
+  apartment_id uuid references apartments(id) on delete cascade,
+  rating int check (rating >= 1 and rating <= 5),
+  comment text,
+  rater_name text,
+  created_at timestamp default now()
+);
+
+-- Enable RLS
+alter table agents enable row level security;
+alter table apartments enable row level security;
+alter table agent_ratings enable row level security;
+
+-- POLICIES: Hide agent phone number from public
+-- 1. Public can only see apartments that are approved
+create policy "Public can view approved apartments" on apartments for select using (status = 'approved');
+
+-- 2. Agents can insert/update their own apartments
+create policy "Agents can manage own apartments" on apartments for all using (auth.uid() = agent_id);
+
+-- 3. Nobody can see agent phone except admin and themselves
+create policy "Agents see own private data" on agents for select using (auth.uid() = id);
+-- You as admin will use service_role key to see all
+
+-- 4. Public can rate, and view ratings
+create policy "Anyone can rate" on agent_ratings for insert with check (true);
+create policy "Anyone can view ratings" on agent_ratings for select using (true);
