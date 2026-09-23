@@ -13,30 +13,26 @@ const AgentSignup = () => {
     password: ''
   });
 
+  const AgentSignup = () => {
+  const history = useHistory();  // 1
+  const [loading, setLoading] = useState(false); // 2
+  const [form, setForm] = useState({...}); // 3
+
+  // 4. PUT IT HERE - RIGHT AFTER useState, BEFORE return
   const handleSignup = async () => {
-    if (!form.fullName || !form.email || !form.password || !form.phone) {
-      alert('Please fill all required fields');
-      return;
-    }
-    setLoading(true);
-    try {
-      // Simulate API - replace with your real Firebase / API call
-      console.log('Creating account:', form);
-      
-      // Example if you use localStorage for now:
-      localStorage.setItem('agent', JSON.stringify(form));
-      
-      // If you use Firebase, put it here:
-      // await createUserWithEmailAndPassword(auth, form.email, form.password)
-      
-      alert('Account created successfully! Please login.');
-      history.push('/agent/login');
-    } catch (error: any) {
-      alert(error.message || 'Signup failed');
-    } finally {
-      setLoading(false);
-    }
+    if (!form.email || !form.password) { alert('Fill all fields'); return; }
+    localStorage.setItem('agent', JSON.stringify(form));
+    alert('Account created! Now login with same email & password');
+    history.push('/agent/login');
   };
+
+  // 5. THEN RETURN
+  return (
+    <IonPage>
+      ...
+    </IonPage>
+  );
+};
 
   return (
     <IonPage>
@@ -61,12 +57,12 @@ const AgentSignup = () => {
               <IonInput placeholder="Password" type="password" value={form.password} onIonChange={e => setForm({...form, password: e.detail.value!})} style={{ border: '1.5px solid #E8E8E8', borderRadius: '10px', padding: '4px 12px', marginBottom: '18px' }} />
 
               <button
-                onClick={handleSignup}
-                disabled={loading}
-                style={{ width: '100%', height: '46px', background: '#E7C873', color: '#000', border: 'none', borderRadius: '10px', fontWeight: '800', opacity: loading ? 0.6 : 1 }}
-              >
-                {loading ? 'Creating...' : 'Create Account'}
-              </button>
+  onClick={handleSignup}
+  disabled={loading}
+  style={{ width: '100%', height: '46px', background: '#E7C873', color: '#000', border: 'none', borderRadius: '10px', fontWeight: '800' }}
+>
+  {loading ? 'Creating...' : 'Create Account'}
+</button>
 
               <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '13px' }}>
                 Already have an account? <Link to="/agent/login" style={{ color: '#C5A059', fontWeight: '800', textDecoration: 'none', marginLeft: '5px' }}>Login</Link>
