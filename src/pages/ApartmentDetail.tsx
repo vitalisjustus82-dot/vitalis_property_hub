@@ -104,11 +104,18 @@ const ApartmentDetail: React.FC = () => {
               )}
 
               {apartment.video_url && (
-                <a className="video-link" href={apartment.video_url} target="_blank" rel="noreferrer">
-                  <IonIcon icon={playCircleOutline} />
-                  Watch walkthrough video
-                </a>
-              )}
+  <div style={{ marginTop: '20px', background: '#f5f5f0', padding: '12px', borderRadius: '16px', border: '1px solid #e0e0e0' }}>
+    <h3 style={{ fontWeight: 'bold', fontSize: '16px', marginBottom: '10px' }}>Walkthrough Video</h3>
+    <div style={{ borderRadius: '12px', overflow: 'hidden', background: '#000', width: '100%', height: '380px' }}>
+      <video
+        src={apartment.video_url}
+        controls
+        playsInline
+        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+      />
+    </div>
+  </div>
+)}
 
               <a
                 className="btn btn-gold full-width"
