@@ -48,6 +48,14 @@ const Home: React.FC = () => {
           <h1>
             Hi, I'm <span>Vitalis Justus Chiadi</span>
           </h1>
+          <div style={{display:'flex', gap:'10px', marginTop:'15px'}}>
+  <IonButton routerLink="/register" fill="outline" size="small" style={{'--border-radius':'20px'}}>
+    Register as User
+  </IonButton>
+  <IonButton routerLink="/agent/register" size="small" style={{'--background':'#f9d26a', '--color':'black', '--border-radius':'20px', fontWeight:'bold'}}>
+    Register as Agent
+  </IonButton>
+</div>
           <p>
             <strong>Founder of Vitalis Property Hub</strong>
             <br />

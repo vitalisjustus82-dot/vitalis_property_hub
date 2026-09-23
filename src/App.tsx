@@ -25,6 +25,7 @@ import Contact from "./pages/Contact";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AgentLogin from "./pages/AgentLogin";
+import AgentSignup from "./pages/AgentSignup";
 import AgentDashboard from "./pages/AgentDashboard";
 import ApartmentForm from "./pages/admin/ApartmentForm";
 
@@ -51,6 +52,7 @@ const App: React.FC = () => (
             component={ApartmentForm}
           />
           <Route exact path="/agent/login" component={AgentLogin} />
+          <Route exact path="/agent/register" component={AgentSignup} />
           <Route exact path="/agent/dashboard" component={AgentDashboard} />
           <Route exact path="/">
             <Redirect to="/home" />

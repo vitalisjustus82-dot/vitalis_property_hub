@@ -1,137 +1,58 @@
-import { useEffect, useState } from 'react';
-import {
-  IonBackButton,
-  IonButtons,
-  IonContent,
-  IonHeader,
-  IonPage,
-  IonSpinner,
-  IonTitle,
-  IonToolbar,
-  IonIcon,
-} from '@ionic/react';
+import { IonContent, IonPage, IonButton } from '@ionic/react';
 import { useParams } from 'react-router-dom';
-import { locationOutline, playCircleOutline } from 'ionicons/icons';
+import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import type { Apartment } from '../types/database';
-import WhatsAppFloat from '../components/WhatsAppFloat';
-import './ApartmentDetail.css';
-
-const FALLBACK_IMAGE =
-  'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=85';
-
-const formatPrice = (price: number) =>
-  new Intl.NumberFormat('en-NG', { maximumFractionDigits: 0 }).format(price);
 
 const ApartmentDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [apartment, setApartment] = useState<Apartment | null>(null);
+  const [apartment, setApartment] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let active = true;
-    (async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('apartments')
-        .select('*')
-        .eq('id', id)
-        .single();
+  const handleEnquire = async () => {
+    if (!apartment) return;
+    const { data: agent } = await supabase.from('agents').select('*').eq('id', apartment.agent_id).single();
+    const myNumber = "2347059559238";
+    const msg = `Hello Vitalis! I like this apartment:\n\n🏠 ${apartment.title}\n📍 ${apartment.location}\n💰 ${apartment.price}\n\nAgent: ${agent?.full_name}\nPhone: ${agent?.phone}\nWhatsApp: ${agent?.whatsapp}`;
+    window.open(`https://wa.me/${myNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+  };
 
-      if (active) {
-        if (!error && data) setApartment(data as Apartment);
-        setLoading(false);
-      }
-    })();
-    return () => {
-      active = false;
+  useEffect(() => {
+    const fetchApartment = async () => {
+      const { data } = await supabase.from('apartments').select('*').eq('id', id).single();
+      setApartment(data);
+      setLoading(false);
     };
+    fetchApartment();
   }, [id]);
+
+  if (loading) return <IonPage><IonContent>Loading...</IonContent></IonPage>;
+  if (!apartment) return <IonPage><IonContent>Not found</IonContent></IonPage>;
 
   return (
     <IonPage>
-      <IonHeader translucent>
-        <IonToolbar color="secondary">
-          <IonButtons slot="start">
-            <IonBackButton defaultHref="/apartments" />
-          </IonButtons>
-          <IonTitle>{apartment?.title ?? 'Apartment'}</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-
-      <IonContent fullscreen>
-        {loading && (
-          <div className="loading-row">
-            <IonSpinner name="crescent" />
-          </div>
-        )}
-
-        {!loading && !apartment && (
-          <p className="empty-state">This listing could not be found. It may have been removed.</p>
-        )}
-
-        {!loading && apartment && (
-          <div className="detail-page">
-            <img
-              className="detail-image"
-              src={apartment.image_url ?? FALLBACK_IMAGE}
-              alt={apartment.title}
+      <IonContent>
+        {apartment.video_url && (
+          <div style={{ width: '100%', height: '300px' }}>
+            <video
+              src={apartment.video_url}
+              controls
+              playsInline
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
-
-            <div className="detail-body">
-              <h1>{apartment.title}</h1>
-
-              <div className="detail-location">
-                <IonIcon icon={locationOutline} />
-                <span>{apartment.location}</span>
-              </div>
-
-              <div className="detail-price">
-                ₦{formatPrice(apartment.price)}
-                <small> / {apartment.price_period}</small>
-              </div>
-
-              {apartment.features && apartment.features.length > 0 && (
-                <div className="feature-pills">
-                  {apartment.features.map((f) => (
-                    <span key={f}>{f}</span>
-                  ))}
-                </div>
-              )}
-
-              {apartment.description && (
-                <p className="detail-description">{apartment.description}</p>
-              )}
-
-              {apartment.video_url && (
-  <div style={{ marginTop: '20px', background: '#f5f5f0', padding: '12px', borderRadius: '16px', border: '1px solid #e0e0e0' }}>
-    <h3 style={{ fontWeight: 'bold', fontSize: '16px', marginBottom: '10px' }}>Walkthrough Video</h3>
-    <div style={{ borderRadius: '12px', overflow: 'hidden', background: '#000', width: '100%', height: '380px' }}>
-      <video
-        src={apartment.video_url}
-        controls
-        playsInline
-        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-      />
-    </div>
-  </div>
-)}
-
-              <a
-                className="btn btn-gold full-width"
-                href={`https://wa.me/2347059559238?text=${encodeURIComponent(
-                  `Hi, I'm interested in "${apartment.title}" (${apartment.location}, ₦${formatPrice(
-                    apartment.price
-                  )}/${apartment.price_period}).`
-                )}`}
-              >
-                Enquire on WhatsApp
-              </a>
-            </div>
           </div>
         )}
 
-        <WhatsAppFloat />
+        <div style={{ padding: '15px' }}>
+          <h2>{apartment.title}</h2>
+          <p>{apartment.location}</p>
+          <p style={{ fontWeight: 'bold' }}>{apartment.price} / {apartment.price_period}</p>
+        </div>
+
+        <div style={{ padding: '15px' }}>
+          <IonButton onClick={handleEnquire} expand="block" color="success">
+            Enquire on WhatsApp
+          </IonButton>
+        </div>
       </IonContent>
     </IonPage>
   );
