@@ -60,7 +60,7 @@ const AgentLogin = () => {
 
               <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '13px', color: '#333' }}>
                 Don't have an account?
-                <Link to="/agent/signup" style={{ color: '#C5A059', fontWeight: '800', textDecoration: 'none', marginLeft: '5px' }}>
+                <Link to="/agent/register" style={{ color: 'gold', fontWeight: '800', textDecoration: 'none', marginLeft: '5px' }}>
                   Register
                 </Link>
               </div>
