@@ -55,13 +55,20 @@ const Home: React.FC = () => {
   zIndex: 100 
 }}>
   <IonButton 
-    routerLink="/agent/login" 
-    size="small"
-    color="warning"
-    style={{ textTransform: 'capitalize', fontWeight: 'bold' }}
-  >
-    Register As Agent
-  </IonButton>
+  routerLink="/agent/login" 
+  size="small"
+  fill="outline"
+  style={{ 
+    textTransform: 'capitalize', 
+    fontWeight: 'bold',
+    '--border-color': '#E7C873',
+    '--color': '#E7C873',
+    '--border-width': '2px',
+    '--border-radius': '8px'
+  } as any}
+>
+  Register As Agent
+</IonButton>
 </div>
         {/* HERO */}
         <section className="hero">
