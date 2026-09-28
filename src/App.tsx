@@ -29,6 +29,7 @@ const App: React.FC = () => (
           <Route exact path="/contact" component={Contact} />
           <Route exact path="/agent/login" component={AgentLogin} />
           <Route exact path="/agent/signup" component={AgentSignup} />
+          <Route exact path="/agent/register" component={AgentSignup} />
           <Route exact path="/agent/dashboard" component={AgentDashboard} />
           <Route exact path="/admin/login" component={AdminLogin} />
           <Route exact path="/admin/dashboard" component={AdminDashboard} />
