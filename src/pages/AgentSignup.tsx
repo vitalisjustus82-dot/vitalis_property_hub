@@ -1,95 +1,68 @@
-import { IonPage, IonContent } from '@ionic/react';
-import { Link, useHistory } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { IonPage, IonContent, IonInput, IonButton, IonLabel } from '@ionic/react';
+import { supabase } from '../components/lib/supabase';
 
-const AgentSignup = () => {
-  const history = useHistory();
-  const [loading, setLoading] = useState(false);
+const AgentSignup: React.FC = () => {
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
   const [agreed, setAgreed] = useState(false);
-  const [form, setForm] = useState({
-    fullName: '',
-    phone: '',
-    whatsapp: '',
-    email: '',
-    password: ''
-  });
+  const [loading, setLoading] = useState(false);
 
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!agreed) {
-      alert("You must agree to the contract to create an account");
+  const handleSignup = async () => {
+    if (!fullName || !phone || !whatsapp) {
+      alert('Fill all 3 fields');
       return;
     }
-    // your supabase signup logic continues here...
-    console.log("Agreed, proceed to create account", form);
+    if (!agreed) {
+      alert('Agree to 80/20 contract');
+      return;
+    }
+    setLoading(true);
+    const { error } = await supabase.from('agents').insert([{
+      full_name: fullName,
+      phone_number: phone,
+      whatsapp_number: whatsapp,
+      agreed_to_commission: true,
+      commission_split: '80/20',
+      status: 'pending'
+    }]);
+    setLoading(false);
+    if (error) {
+      alert('Error: ' + error.message);
+    } else {
+      alert('Saved! Check Supabase agents table');
+      setFullName(''); setPhone(''); setWhatsapp(''); setAgreed(false);
+    }
   };
 
   return (
     <IonPage>
-      <IonContent className="ion-padding" style={{ '--background': '#0A1931' } as any}>
-        
-        {/* THIS FIXES THE PLACEHOLDER - NO CSS FILE NEEDED */}
-        <style>{`
-          .custom-input {
-            width: 100%;
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
-            padding: 11px 12px;
-            font-size: 14px;
-            outline: none;
-            background: white;
-          }
-          .custom-input::placeholder {
-            font-size: 12px !important;
-            color: #9ca3af !important;
-            opacity: 1;
-          }
-          .custom-input:focus {
-            border-color: #E5C07B;
-            box-shadow: 0 0 0 2px rgba(229,192,123,0.2);
-          }
-        `}</style>
-
-        <div style={{ maxWidth: '420px', margin: '0 auto' }}>
-          <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '20px', marginBottom: '20px' }}>
-            <p style={{ fontSize: '10px', letterSpacing: '2px', color: '#E5C07B' }}>VITALIS PROPERTY HUB</p>
-            <h1 style={{ fontSize: '24px', fontWeight: 'bold', color: 'white' }}>Become a <br/><span style={{ color: '#E5C07B' }}>Verified Agent</span></h1>
+      <IonContent className="ion-padding" style={{ '--background': '#0f1e3a' } as any}>
+        <div style={{ maxWidth: '420px', margin: '30px auto' }}>
+          <div style={{ background: '#132040', padding: '20px', borderRadius: '12px', marginBottom: '20px' }}>
+            <p style={{ color: '#c9a86a', fontSize: '10px', letterSpacing: '2px', margin: '0 0 8px 0' }}>VITALIS PROPERTY HUB</p>
+            <h2 style={{ color: 'white', margin: 0 }}>Become a<br/><span style={{ color: '#c9a86a' }}>Verified Agent</span></h2>
           </div>
-
-          <div style={{ background: 'white', borderRadius: '16px', padding: '20px' }}>
-            <h2 style={{ fontWeight: 'bold', color: '#1e293b' }}>Agent Signup</h2>
-            <p style={{ fontSize: '11px', color: 'gray', marginBottom: '15px' }}>Create your agent account</p>
-
-            <form onSubmit={handleSignup} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <input className="custom-input" placeholder="Full Name" value={form.fullName} onChange={e=>setForm({...form, fullName: e.target.value})} />
-              <input className="custom-input" placeholder="Phone Number" value={form.phone} onChange={e=>setForm({...form, phone: e.target.value})} />
-              <input className="custom-input" placeholder="WhatsApp Number" value={form.whatsapp} onChange={e=>setForm({...form, whatsapp: e.target.value})} />
-              <input className="custom-input" placeholder="Email Address" value={form.email} onChange={e=>setForm({...form, email: e.target.value})} />
-              <input className="custom-input" type="password" placeholder="Password" value={form.password} onChange={e=>setForm({...form, password: e.target.value})} />
-
-              {/* CONTRACT POLICY AFTER PASSWORD */}
-              <div style={{ background: '#FFF8E8', border: '1px solid #E5C07B66', borderRadius: '8px', padding: '12px' }}>
-                <h3 style={{ fontSize: '11px', fontWeight: 'bold', textTransform: 'uppercase' }}>Agent Commission Agreement</h3>
-                <p style={{ fontSize: '11px', lineHeight: '1.5', color: '#475569', marginTop: '6px', textAlign: 'justify' }}>
-                  By registering as an agent on Vitalis Property Hub, you agree: When a client finds an apartment through our website and pays the standard <b>10% agency fee</b>, that 10% will be shared <b>80% to the Agent and 20% to the Platform Owner (Vitalis Property Hub)</b> as platform fee. You agree to remit the platform's share within 24 hours.
-                </p>
-                <label style={{ display: 'flex', gap: '8px', marginTop: '10px', cursor: 'pointer', alignItems: 'flex-start' }}>
-                  <input type="checkbox" checked={agreed} onChange={e=>setAgreed(e.target.checked)} required style={{marginTop: '2px'}} />
-                  <span style={{ fontSize: '11px', color: '#1e293b' }}>I have read and agree to the 80/20 commission contract. <span style={{color:'red'}}>*</span></span>
-                </label>
+          <div style={{ background: 'white', padding: '24px', borderRadius: '12px' }}>
+            <IonInput placeholder="Full Name" value={fullName} onIonChange={e => setFullName(e.detail.value!)} style={{ border: '1px solid #ddd', borderRadius: '8px', padding: '0 10px', marginBottom: '12px' }} />
+            <IonInput placeholder="Phone Number" value={phone} onIonChange={e => setPhone(e.detail.value!)} style={{ border: '1px solid #ddd', borderRadius: '8px', padding: '0 10px', marginBottom: '12px' }} />
+            <IonInput placeholder="WhatsApp Number" value={whatsapp} onIonChange={e => setWhatsapp(e.detail.value!)} style={{ border: '1px solid #ddd', borderRadius: '8px', padding: '0 10px', marginBottom: '16px' }} />
+            <div style={{ background: '#fdf6e9', border: '1px solid #f0d9a0', borderRadius: '8px', padding: '12px', marginBottom: '16px' }}>
+              <p style={{ fontSize: '10px', fontWeight: 'bold', margin: '0 0 6px 0' }}>80/20 COMMISSION AGREEMENT</p>
+              <p style={{ fontSize: '11px', margin: 0 }}>10% agency fee shared 80% Agent / 20% Platform. Remit within 24hrs.</p>
+              <div style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+                <input type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)} />
+                <IonLabel style={{ fontSize: '11px' }}>I agree to 80/20 contract *</IonLabel>
               </div>
-
-              <button disabled={!agreed || loading} type="submit" style={{ background: agreed ? '#E5C07B' : '#d1d5db', color: agreed ? '#1e293b' : '#6b7280', padding: '12px', borderRadius: '8px', fontWeight: 'bold', fontSize: '13px', cursor: agreed ? 'pointer' : 'not-allowed' }}>
-                {loading ? 'Creating...' : 'Create Account'}
-              </button>
-
-              <p style={{ textAlign: 'center', fontSize: '11px' }}>Already have an account? <Link to="/agent/login" style={{ color: '#C8A96A', fontWeight: 'bold' }}>Login</Link></p>
-            </form>
+            </div>
+            <IonButton expand="block" onClick={handleSignup} disabled={!agreed || loading} style={{ '--background': '#0f1e3a' } as any}>
+              {loading ? 'Saving...' : 'Create Account'}
+            </IonButton>
           </div>
         </div>
       </IonContent>
     </IonPage>
   );
 };
-
 export default AgentSignup;
