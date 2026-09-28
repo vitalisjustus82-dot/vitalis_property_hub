@@ -10,6 +10,7 @@ import Apartments from './pages/Apartments';
 import ApartmentDetail from './pages/ApartmentDetail';
 import AgentLogin from './pages/AgentLogin';
 import AgentSignup from './pages/AgentSignup';
+import AgentProfile from './pages/AgentProfile';
 import AgentDashboard from './pages/AgentDashboard';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -29,6 +30,7 @@ const App: React.FC = () => (
           <Route exact path="/contact" component={Contact} />
           <Route exact path="/agent/login" component={AgentLogin} />
           <Route exact path="/agent/signup" component={AgentSignup} />
+          <Route path="/agent/profile" component={AgentProfile} exact />
           <Route exact path="/agent/register" component={AgentSignup} />
           <Route exact path="/agent/dashboard" component={AgentDashboard} />
           <Route exact path="/admin/login" component={AdminLogin} />
