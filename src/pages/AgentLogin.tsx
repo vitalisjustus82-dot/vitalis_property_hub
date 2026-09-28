@@ -101,7 +101,9 @@ const AgentLogin: React.FC = () => {
             <IonButton onClick={handleLogin} expand="block" disabled={loading} style={{ '--background': '#c9a86a', '--color': '#000', marginTop: '12px', height: '42px', fontWeight: 700, fontSize: '13px' } as any}>
               {loading ? 'Checking...' : 'Login'}
             </IonButton>
-            <p style={{ textAlign: 'center', fontSize: '11px', marginTop: '12px', color: '#6b7280' }}>Don't have an account? <span style={{ color: '#c9a86a', fontWeight: 700 }}>Register</span></p>
+            <p style={{ textAlign: 'center', fontSize: '11px', marginTop: '12px', color: '#6b7280' }}>
+  Don't have an account? <a href="/agent/signup" style={{ color: '#c9a86a', fontWeight: 700, textDecoration: 'none' }}>Register</a>
+</p>
           </div>
         </div>
       </IonContent>
