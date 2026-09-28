@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { IonPage, IonContent, IonInput, IonButton, IonLabel } from '@ionic/react';
-import { supabase } from '../components/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+const supabase = createClient(
+  'https://yqegkmiqxlcgbkihxzdn.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxZWdrbWlxeGxjZ2JraWh4emRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgzNDE4MTgsImV4cCI6MjA3MzkxNzgxOH0.Qs1K3VX3KXaQW3y2b3cQ1x2y3z'
+);
 
 const AgentSignup: React.FC = () => {
   const [fullName, setFullName] = useState('');
