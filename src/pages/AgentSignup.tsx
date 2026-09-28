@@ -68,8 +68,8 @@ const AgentSignup: React.FC = () => {
             <IonInput placeholder="Full Name" value={fullName} onIonChange={e=>setFullName(e.detail.value as string)} style={inputStyle} />
             <IonInput placeholder="Phone Number" value={phone} onIonChange={e=>setPhone(e.detail.value as string)} style={inputStyle} />
             <IonInput placeholder="WhatsApp Number" value={whatsapp} onIonChange={e=>setWhatsapp(e.detail.value as string)} style={inputStyle} />
-            <IonInput placeholder="Email Address" value={email} onIonChange={e=>setEmail(e.detail.value as string)} style={inputStyle} />
-            <IonInput placeholder="Password" type="password" value={password} onIonChange={e=>setPassword(e.detail.value as string)} style={inputStyle} />
+           <IonInput placeholder="Email Address" autocomplete="off" type="text" name="vitalis_email_no_fill" value={email} onIonChange={e=>setEmail(e.detail.value as string)} style={inputStyle} />
+            <IonInput placeholder="Password" autocomplete="new-password" type="password" name="vitalis_pass_no_fill" value={password} onIonChange={e=>setPassword(e.detail.value as string)} style={inputStyle} />
 
             {/* POLICY */}
             <div style={{ background: '#fffbeb', border: '1.5px solid #fde68a', borderRadius: '10px', padding: '12px', margin: '4px 0 14px 0' }}>
