@@ -1,85 +1,112 @@
-import { IonPage, IonContent, IonInput } from '@ionic/react';
-import { Link, useHistory } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { IonPage, IonContent, IonInput, IonButton } from '@ionic/react';
+import { createClient } from '@supabase/supabase-js';
 
-const AgentLogin = () => {
-  const history = useHistory();
-  const [loading, setLoading] = useState(false);
+const supabase = createClient(
+  'https://yqegkmiqxlcgbkihxzdn.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlxZWdrbWlxeGxjZ2JraWh4emRuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgzNDE4MTgsImV4cCI6MjA3MzkxNzgxOH0.Qs1K3VX3KXaQwQy2b3cQ1x2y3z1x' // REPLACE with your real anon key from supabase.ts
+);
+
+const AgentLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passError, setPassError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // kill chrome autofill
+    setTimeout(() => { setEmail(''); setPassword(''); }, 100);
+  }, []);
 
   const handleLogin = async () => {
-    if (!email || !password) {
-      alert('Please enter email and password');
-      return;
-    }
+    setEmailError(''); setPassError('');
+    if (!email) { setEmailError('Enter your email'); return; }
+    if (!password) { setPassError('Enter your password'); return; }
 
     setLoading(true);
-    try {
-      const saved = localStorage.getItem('agent');
-      
-      if (!saved) {
-        alert('No account found. Please register first!');
-        history.push('/agent/register');
-        return;
-      }
-
-      const agent = JSON.parse(saved);
-
-      // CHECK EMAIL
-      if (agent.email.toLowerCase().trim() !== email.toLowerCase().trim()) {
-        alert('Wrong email! Account not found.');
-        return;
-      }
-
-      // CHECK PASSWORD
-      if (agent.password !== password) {
-        alert('Wrong password! Please try again.');
-        return;
-      }
-
-      // CORRECT - LOGIN SUCCESS
-      localStorage.setItem('isAgentLoggedIn', 'true');
-      localStorage.setItem('currentAgent', JSON.stringify(agent));
-      alert(`Welcome back ${agent.fullName}!`);
-      history.push('/agent/dashboard');
-
-    } catch (error: any) {
-      alert('Login failed: ' + error.message);
-    } finally {
-      setLoading(false);
+    // 1. Check if email exists in agents table
+    const { data: agent } = await supabase.from('agents').select('email').eq('email', email).single();
+    
+    if (!agent) {
+      setEmailError('Wrong email - account not found');
+      setLoading(false); return;
     }
+
+    // 2. Try supabase auth login
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) {
+      setPassError('Wrong password');
+      setLoading(false); return;
+    }
+
+    alert('Login successful!');
+    setLoading(false);
+    // window.location.href = '/agent/dashboard';
   };
+
+  const inputStyle = (hasError: boolean) => ({
+    border: hasError ? '1.5px solid #ef4444' : '1px solid #e5e7eb',
+    borderRadius: '10px',
+    '--padding-start': '16px',
+    '--padding-end': '12px',
+    '--padding-top': '13px',
+    '--padding-bottom': '13px',
+    '--placeholder-color': '#9ca3af',
+    '--placeholder-opacity': '1',
+    fontSize: '13px',
+    background: hasError ? '#fef2f2' : 'white',
+    marginBottom: '4px'
+  } as any);
 
   return (
     <IonPage>
-      <IonContent fullscreen style={{ '--background': '#0A1931' } as any}>
-        <div style={{ minHeight: '100vh', background: '#0A1931', display: 'flex', justifyContent: 'center', padding: '30px 16px 80px 16px' }}>
-          <div style={{ width: '100%', maxWidth: '420px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <IonContent style={{ '--background': '#0a1931' } as any} className="ion-padding">
+        <div style={{ maxWidth: '380px', margin: '40px auto' }}>
+          <div style={{ background: '#112240', border: '1px solid #1e3a5f', padding: '18px', borderRadius: '16px', marginBottom: '16px' }}>
+            <p style={{ color: '#c9a86a', fontSize: '8px', letterSpacing: '2px', margin: 0, fontWeight: 700 }}>VITALIS PROPERTY HUB</p>
+            <h2 style={{ color: 'white', margin: '6px 0 0 0', fontSize: '22px' }}>Welcome Back,<br/><span style={{ color: '#c9a86a' }}>Agent</span></h2>
+          </div>
+
+          <div style={{ background: 'white', padding: '22px', borderRadius: '16px' }}>
+            <h3 style={{ margin: '0 0 16px 0', color: '#0a1931', fontSize: '18px' }}>Agent Login</h3>
             
-            <div style={{ background: '#0F1E3A', borderRadius: '18px', padding: '28px 26px', border: '1px solid rgba(231,200,115,0.15)' }}>
-              <div style={{ color: '#E7C873', letterSpacing: '2.5px', fontSize: '10px', fontWeight: '700' }}>VITALIS PROPERTY HUB</div>
-              <h1 style={{ fontSize: '28px', margin: '12px 0 0 0', fontWeight: '800', color: 'white' }}>Welcome Back,<br/><span style={{ color: '#E7C873' }}>Agent</span></h1>
-            </div>
+            <form autoComplete="off">
+              <input type="text" style={{ display: 'none' }} />
+              <input type="password" style={{ display: 'none' }} />
 
-            <div style={{ background: 'white', borderRadius: '18px', padding: '26px' }}>
-              <h2 style={{ color: '#0F1E3A', fontWeight: '800', margin: '0 0 18px 0' }}>Agent Login</h2>
-              
-              <IonInput placeholder="Email" value={email} onIonChange={e => setEmail(e.detail.value!)} style={{ border: '1.5px solid #E8E8E8', borderRadius: '10px', padding: '4px 12px', marginBottom: '12px' }} />
-              <IonInput placeholder="Password" type="password" value={password} onIonChange={e => setPassword(e.detail.value!)} style={{ border: '1.5px solid #E8E8E8', borderRadius: '10px', padding: '4px 12px', marginBottom: '18px' }} />
+              <IonInput 
+                placeholder="Email Address" 
+                type="text"
+                autocomplete="off"
+                name="vph_no_fill_email_123"
+                value={email} 
+                onIonInput={e=>{ setEmail((e.target as any).value); setEmailError(''); }} 
+                style={inputStyle(!!emailError)} 
+              />
+              {emailError && <p style={{ color: '#ef4444', fontSize: '11px', margin: '0 0 10px 4px', fontWeight: 600 }}>{emailError}</p>}
 
-              <button onClick={handleLogin} disabled={loading} style={{ width: '100%', height: '46px', background: '#E7C873', color: '#000', border: 'none', borderRadius: '10px', fontWeight: '800' }}>
-                {loading ? 'Checking...' : 'Login'}
-              </button>
+              <IonInput 
+                placeholder="Password" 
+                type="password"
+                autocomplete="new-password"
+                name="vph_no_fill_pass_123"
+                value={password} 
+                onIonInput={e=>{ setPassword((e.target as any).value); setPassError(''); }} 
+                style={inputStyle(!!passError)} 
+              />
+              {passError && <p style={{ color: '#ef4444', fontSize: '11px', margin: '0 0 10px 4px', fontWeight: 600 }}>{passError}</p>}
+            </form>
 
-              <div style={{ textAlign: 'center', marginTop: '16px', fontSize: '13px' }}>
-                Don't have an account? <Link to="/agent/register" style={{ color: '#C5A059', fontWeight: '800', textDecoration: 'none', marginLeft: '5px' }}>Register</Link>
-              </div>
-            </div>
+            <IonButton onClick={handleLogin} expand="block" disabled={loading} style={{ '--background': '#c9a86a', '--color': '#000', marginTop: '12px', height: '42px', fontWeight: 700, fontSize: '13px' } as any}>
+              {loading ? 'Checking...' : 'Login'}
+            </IonButton>
+            <p style={{ textAlign: 'center', fontSize: '11px', marginTop: '12px', color: '#6b7280' }}>Don't have an account? <span style={{ color: '#c9a86a', fontWeight: 700 }}>Register</span></p>
           </div>
         </div>
       </IonContent>
     </IonPage>
   );
 };
+
 export default AgentLogin;
