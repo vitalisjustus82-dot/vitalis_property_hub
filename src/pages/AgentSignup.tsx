@@ -1,59 +1,50 @@
 import React, { useState } from 'react';
-import { IonPage, IonContent, IonInput, IonButton } from '@ionic/react';
-import { createClient } from '@supabase/supabase-js';
-
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+import { IonPage, IonContent } from '@ionic/react';
+import { supabase } from '../supabaseClient';
 
 const AgentSignup: React.FC = () => {
-  const [fullName, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [whatsapp, setWhatsapp] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [agree, setAgree] = useState(true);
+  const [fullName, setFullName] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
-    if (!fullName || !email || !password || !phone) { alert('Fill all fields'); return; }
-    if (!agree) { alert('You must agree to policy'); return; }
+    if (!email || !password) { alert('Fill all fields'); return; }
     setLoading(true);
-    try {
-      const { data, error } = await supabase.auth.signUp({ email, password });
-      if (error) throw error;
-      const { error: dbError } = await supabase.from('agents').insert([{ full_name: fullName, phone, whatsapp, email }]);
-      if (dbError) throw dbError;
-      alert('Account created! Now login');
-      window.location.href = '/agent/login';
-    } catch (err: any) {
-      alert(err.message || 'Failed to fetch - check Supabase keys in Vercel');
-    }
+    const { data, error } = await supabase.auth.signUp({ 
+      email, 
+      password,
+      options: { data: { full_name: fullName } }
+    });
     setLoading(false);
+    if (error) {
+      alert(error.message);
+    } else {
+      alert('Account created! Check your email to confirm, then login.');
+      window.location.href = '/agent/login';
+    }
   };
 
   return (
     <IonPage>
-      <IonContent style={{ '--background': '#0a1931' } as any} className="ion-padding">
-        <div style={{ maxWidth: '380px', margin: '20px auto', background: 'white', padding: '20px', borderRadius: '16px' }}>
-          <h2 style={{ color: '#0a1931' }}>Create Agent Account</h2>
-          <IonInput placeholder="Full Name" value={fullName} onIonInput={e=>setFullName((e.target as any).value)} style={{ border: '1px solid #ddd', borderRadius: '8px', marginBottom: '10px', '--padding-start': '12px' } as any} />
-          <IonInput placeholder="Phone 070..." value={phone} onIonInput={e=>setPhone((e.target as any).value)} style={{ border: '1px solid #ddd', borderRadius: '8px', marginBottom: '10px', '--padding-start': '12px' } as any} />
-          <IonInput placeholder="WhatsApp" value={whatsapp} onIonInput={e=>setWhatsapp((e.target as any).value)} style={{ border: '1px solid #ddd', borderRadius: '8px', marginBottom: '10px', '--padding-start': '12px' } as any} />
-          <IonInput placeholder="Email Address" type="email" value={email} onIonInput={e=>setEmail((e.target as any).value)} style={{ border: '1px solid #ddd', borderRadius: '8px', marginBottom: '10px', '--padding-start': '12px' } as any} />
-          <IonInput placeholder="Password" type="password" value={password} onIonInput={e=>setPassword((e.target as any).value)} style={{ border: '1px solid #ddd', borderRadius: '8px', marginBottom: '10px', '--padding-start': '12px' } as any} />
-          
-          <div style={{ background: '#fef9e7', padding: '10px', borderRadius: '8px', fontSize: '10px', marginBottom: '12px', border: '1px solid #f5e6a3' }}>
-            <b>AGENT COMMISSION POLICY</b><br/>By registering, you agree: When client finds apartment through website and you receive 10% agency fee, 10% fee shall be shared: Website Owner (20%) and Agent (80%).
-            <div style={{ marginTop: '8px' }}><label><input type="radio" checked={agree} onChange={()=>setAgree(true)} /> Agree</label> <label style={{ marginLeft: '10px' }}><input type="radio" checked={!agree} onChange={()=>setAgree(false)} /> Disagree</label></div>
+      <IonContent fullscreen style={{ '--background': '#0a1931' } as any}>
+        <div style={{ minHeight: '100vh', background: '#0a1931', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div style={{ background: '#132a54', padding: '20px 25px', borderRadius: '18px', width: '100%', maxWidth: '400px', marginBottom: '20px' }}>
+            <div style={{ color: '#c9a86a', fontSize: '11px', letterSpacing: '1.5px', fontWeight: 700 }}>VITALIS PROPERTY HUB</div>
+            <div style={{ color: 'white', fontSize: '26px', fontWeight: 700, marginTop: '5px' }}>Create Account,</div>
+            <div style={{ color: '#c9a86a', fontSize: '26px', fontWeight: 700 }}>Agent</div>
           </div>
-
-          <IonButton expand="block" onClick={handleSignup} disabled={loading} style={{ '--background': '#c9a86a', '--color': '#000' } as any}>{loading ? 'CREATING...' : 'Create Account'}</IonButton>
-          <p style={{ textAlign: 'center', fontSize: '11px', marginTop: '10px' }}>Already have an account? <a href="/agent/login" style={{ color: '#c9a86a', fontWeight: 700 }}>Login</a></p>
+          <div style={{ background: 'white', borderRadius: '18px', padding: '25px', width: '100%', maxWidth: '400px' }}>
+            <div style={{ fontSize: '20px', fontWeight: 700, marginBottom: '20px', color: '#0a1931' }}>Agent Signup</div>
+            <input value={fullName} onChange={e=>setFullName(e.target.value)} placeholder="Full Name" style={{ width: '100%', padding: '14px', borderRadius: '10px', border: '1px solid #ddd', background: '#eef2ff', marginBottom: '12px' }} />
+            <input value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email e.g. james@gmail.com" style={{ width: '100%', padding: '14px', borderRadius: '10px', border: '1px solid #ddd', background: '#eef2ff', marginBottom: '12px' }} />
+            <input value={password} onChange={e=>setPassword(e.target.value)} type="password" placeholder="Password (min 6 chars)" style={{ width: '100%', padding: '14px', borderRadius: '10px', border: '1px solid #ddd', background: '#eef2ff', marginBottom: '16px' }} />
+            <button onClick={handleSignup} disabled={loading} style={{ width: '100%', background: '#c9a86a', color: 'black', border: 'none', padding: '14px', borderRadius: '10px', fontWeight: 800, cursor: 'pointer' }}>{loading ? 'CREATING...' : 'SIGN UP'}</button>
+            <div style={{ textAlign: 'center', marginTop: '15px', fontSize: '13px' }}>Already have an account? <a href="/agent/login" style={{ color: '#c9a86a', fontWeight: 700 }}>Login</a></div>
+          </div>
         </div>
       </IonContent>
     </IonPage>
   );
 };
-
 export default AgentSignup;
