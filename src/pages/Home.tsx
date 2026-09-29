@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   IonContent,
   IonPage,
@@ -28,25 +28,13 @@ const Home: React.FC = () => {
     supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
     supabase.auth.onAuthStateChange((_e, session) => setUser(session?.user ?? null));
 
-    let active = true;
-    (async () => {
-      const { data, error } = await supabase
-        .from('apartments')
-        .select('*')
-        .eq('status', 'available')
-        .order('featured', { ascending: false })
-        .order('created_at', { ascending: false })
-        .limit(4);
-
-      if (active) {
-        if (!error && data) setFeatured(data as Apartment[]);
-        setLoading(false);
-      }
-    })();
-    return () => {
-      active = false;
-    };
-  }, []);
+      const fetchFeatured = async () => {
+    const { data } = await supabase.from('apartments').select('*').limit(6).order('created_at', { ascending: false });
+    if (data) setFeatured(data as any);
+    setLoading(false);
+  };
+  fetchFeatured();
+}, []);
 
   return (
     <IonPage>
