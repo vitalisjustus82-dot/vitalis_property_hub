@@ -23,8 +23,11 @@ const Home: React.FC = () => {
   const history = useHistory();
   const [featured, setFeatured] = useState<Apartment[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [user, setUser] = useState<any>(null);
   useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
+    supabase.auth.onAuthStateChange((_e, session) => setUser(session?.user ?? null));
+
     let active = true;
     (async () => {
       const { data, error } = await supabase
@@ -54,7 +57,12 @@ const Home: React.FC = () => {
   right: '15px', 
   zIndex: 100 
 }}>
-<button onClick={()=> window.location.href='/agent/login'} style={{ background: '#d4af37', color: 'black', border: 'none', padding: '8px 20px', borderRadius: '20px', fontWeight: 800, cursor: 'pointer', fontSize: '13px' }}>Register</button>
+{!user && (
+  <div style={{ display: 'flex', gap: '8px' }}>
+    <button onClick={() => history.push('/agent/login')} style={{ background: 'transparent', color: 'white', border: '1px solid #c9a86a', padding: '7px 16px', borderRadius: '20px', fontWeight: 700, fontSize: '12px', cursor: 'pointer' }}>Login</button>
+    <button onClick={() => history.push('/agent/signup')} style={{ background: '#d4af37', color: 'black', border: 'none', padding: '7px 18px', borderRadius: '20px', fontWeight: 800, fontSize: '12px', cursor: 'pointer' }}>Register</button>
+  </div>
+)}
 </div>
         {/* HERO */}
         <section className="hero">
