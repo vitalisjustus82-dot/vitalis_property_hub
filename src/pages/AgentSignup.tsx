@@ -1,6 +1,6 @@
+import { supabase } from '../lib/supabase';
 import React, { useState } from 'react';
 import { IonPage, IonContent } from '@ionic/react';
-import { supabase } from '../supabaseClient';
 
 const AgentSignup: React.FC = () => {
   const [email, setEmail] = useState('');
