@@ -19,23 +19,30 @@ import PropertyCard from '../components/PropertyCard';
 import WhatsAppFloat from '../components/WhatsAppFloat';
 import './Home.css';
 
-const Home: React.FC = () => {
+ const Home: React.FC = () => {
   const history = useHistory();
+  const [user, setUser] = useState<any>(null);
   const [featured, setFeatured] = useState<Apartment[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<any>(null);
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }) => setUser(data.session?.user ?? null));
-    supabase.auth.onAuthStateChange((_e, session) => setUser(session?.user ?? null));
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+    });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
-      const fetchFeatured = async () => {
-    const { data } = await supabase.from('apartments').select('*').limit(6).order('created_at', { ascending: false });
-    if (data) setFeatured(data as any);
-    setLoading(false);
-  };
-  fetchFeatured();
-}, []);
-
+    useEffect(() => {
+    const fetchFeatured = async () => {
+      const { data } = await supabase.from('apartments').select('*').limit(6).order('created_at', { ascending: false });
+      if (data) setFeatured(data as any);
+      setLoading(false);
+    };
+    fetchFeatured();
+  }, []);
   return (
     <IonPage>
       <IonContent fullscreen>
