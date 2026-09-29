@@ -54,21 +54,7 @@ const Home: React.FC = () => {
   right: '15px', 
   zIndex: 100 
 }}>
-  <IonButton 
-  routerLink="/agent/login" 
-  size="small"
-  fill="outline"
-  style={{ 
-    textTransform: 'capitalize', 
-    fontWeight: 'bold',
-    '--border-color': '#E7C873',
-    '--color': '#E7C873',
-    '--border-width': '2px',
-    '--border-radius': '8px'
-  } as any}
->
-  Register As Agent
-</IonButton>
+<button onClick={()=> window.location.href='/agent/signup'} style={{ border: '1px solid #c9a86a', color: '#c9a86a', background: 'transparent', padding: '7px 16px', borderRadius: '20px', fontWeight: 700, cursor: 'pointer' }}>Register As Agent</button>
 </div>
         {/* HERO */}
         <section className="hero">
