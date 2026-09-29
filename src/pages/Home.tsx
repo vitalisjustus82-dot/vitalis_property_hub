@@ -39,19 +39,21 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-      <div style={{ 
-  position: 'absolute', 
-  top: '15px', 
-  right: '15px', 
-  zIndex: 100 
-}}>
-{!user && (
-  <div style={{ display: 'flex', gap: '8px' }}>
-    <button onClick={() => history.push('/agent/login')} style={{ background: 'transparent', color: 'white', border: '1px solid #c9a86a', padding: '7px 16px', borderRadius: '20px', fontWeight: 700, fontSize: '12px', cursor: 'pointer' }}>Login</button>
-    <button onClick={() => history.push('/agent/signup')} style={{ background: '#d4af37', color: 'black', border: 'none', padding: '7px 18px', borderRadius: '20px', fontWeight: 800, fontSize: '12px', cursor: 'pointer' }}>Register</button>
-  </div>
-)}
-</div>
+          <div style={{
+          position: 'absolute',
+          top: '15px',
+          right: '15px',
+          zIndex: 100
+        }}>
+          {!user ? (
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button onClick={() => history.push('/agent/login')} style={{ background: 'transparent', color: 'white', border: '1px solid #c9a86a', padding: '7px 16px', borderRadius: '20px', fontWeight: 700, fontSize: '12px', cursor: 'pointer' }}>Login</button>
+              <button onClick={() => history.push('/agent/signup')} style={{ background: '#d4af37', color: 'black', border: 'none', padding: '7px 18px', borderRadius: '20px', fontWeight: 800, fontSize: '12px', cursor: 'pointer' }}>Register</button>
+            </div>
+          ) : (
+            <button onClick={() => history.push('/agent/dashboard')} style={{ background: '#d4af37', color: 'black', border: 'none', padding: '7px 18px', borderRadius: '20px', fontWeight: 800, fontSize: '12px', cursor: 'pointer' }}>Dashboard</button>
+          )}
+        </div>
         {/* HERO */}
         <section className="hero">
           <div className="eyebrow">Vitalis Property Hub</div>
