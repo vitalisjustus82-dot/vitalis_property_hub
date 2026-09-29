@@ -17,13 +17,26 @@ setupIonicReact();
 const BottomNav: React.FC = () => {
   const path = window.location.pathname;
   if (path.startsWith('/agent')) return null;
-  const active = (p: string) => path === p || (p !== '/' && path.includes(p)) ? '#c9a86a' : '#ffffff';
   return (
-    <div style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: '#0a1931', display: 'flex', justifyContent: 'space-around', padding: '10px 0 14px 0', zIndex: 9999, borderTop: '1px solid #1e3a6e' }}>
-      <a href="/" style={{ color: active('/'), textDecoration: 'none', textAlign: 'center', fontSize: '11px', fontWeight: 600 }}><div style={{ fontSize: '18px' }}>⌂</div>Home</a>
-      <a href="/apartments" style={{ color: active('/apartments'), textDecoration: 'none', textAlign: 'center', fontSize: '11px', fontWeight: 600 }}><div style={{ fontSize: '18px' }}>⊞</div>Apartments</a>
-      <a href="/contact" style={{ color: active('/contact'), textDecoration: 'none', textAlign: 'center', fontSize: '11px', fontWeight: 600 }}><div style={{ fontSize: '18px' }}>ⓘ</div>About</a>
-      <a href="/contact" style={{ color: active('/contact'), textDecoration: 'none', textAlign: 'center', fontSize: '11px', fontWeight: 600 }}><div style={{ fontSize: '18px' }}>☎</div>Contact</a>
+    <div style={{
+      position: 'fixed', bottom: 0, left: 0, right: 0,
+      background: '#0f2347',
+      display: 'flex', justifyContent: 'space-around', alignItems: 'center',
+      padding: '8px 0 12px 0', zIndex: 9999,
+      borderTop: '1px solid rgba(255,255,255,0.1)'
+    }}>
+      <a href="/" style={{ textDecoration: 'none', color: path === '/' || path === '/home' ? '#d4af37' : 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '12px', gap: '3px' }}>
+        <span style={{ fontSize: '22px', lineHeight: '22px' }}>⌂</span> Home
+      </a>
+      <a href="/apartments" style={{ textDecoration: 'none', color: path.includes('/apartments') ? '#d4af37' : 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '12px', gap: '3px' }}>
+        <span style={{ fontSize: '20px', lineHeight: '22px' }}>🏢</span> Apartments
+      </a>
+      <a href="/contact" style={{ textDecoration: 'none', color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '12px', gap: '3px' }}>
+        <span style={{ fontSize: '20px', lineHeight: '22px', border: '1.5px solid white', borderRadius: '50%', width: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px' }}>i</span> About
+      </a>
+      <a href="/contact" style={{ textDecoration: 'none', color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '12px', gap: '3px' }}>
+        <span style={{ fontSize: '20px', lineHeight: '22px' }}>📞</span> Contact
+      </a>
     </div>
   );
 };
