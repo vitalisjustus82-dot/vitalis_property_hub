@@ -1,4 +1,3 @@
-import AgentSignup from "./pages/AgentSignup";
 import { Redirect, Route } from "react-router-dom";
 import {
   IonApp,
@@ -16,6 +15,7 @@ import {
   businessOutline,
   informationCircleOutline,
   callOutline,
+  personOutline,
 } from "ionicons/icons";
 
 import Home from "./pages/Home";
@@ -77,6 +77,10 @@ const App: React.FC = () => (
             <IonIcon aria-hidden="true" icon={callOutline} />
             <IonLabel>Contact</IonLabel>
           </IonTabButton>
+                  <IonTabButton tab="profile" href="/agent/profile">
+          <IonIcon aria-hidden="true" icon={personOutline} />
+          <IonLabel>Profile</IonLabel>
+        </IonTabButton>
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
