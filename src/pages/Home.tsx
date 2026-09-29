@@ -54,7 +54,7 @@ const Home: React.FC = () => {
   right: '15px', 
   zIndex: 100 
 }}>
-<button onClick={()=> window.location.href='/agent/signup'} style={{ border: '1px solid #c9a86a', color: '#c9a86a', background: 'transparent', padding: '7px 16px', borderRadius: '20px', fontWeight: 700, cursor: 'pointer' }}>Register As Agent</button>
+<button onClick={()=> window.location.href='/agent/login'} style={{ background: '#d4af37', color: 'black', border: 'none', padding: '8px 20px', borderRadius: '20px', fontWeight: 800, cursor: 'pointer', fontSize: '13px' }}>Register</button>
 </div>
         {/* HERO */}
         <section className="hero">
