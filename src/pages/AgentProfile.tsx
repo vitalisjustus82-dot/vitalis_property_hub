@@ -9,6 +9,7 @@ import {
   IonAvatar,
   IonIcon,
   IonButton,
+  IonCard,
   IonCardContent,
   IonInput,
   IonTextarea,
@@ -108,11 +109,11 @@ const AgentProfile = () => {
       setNewApt({ title: "", price: "", location: "", description: "" });
       setMediaFiles(null);
       setShowAdd(false);
-      fetchAll();
+            fetchAll();
     }
   };
 
-  if (loading) {
+  if (loading) { {
     return (
       <IonPage>
         <IonContent className="ion-padding" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
