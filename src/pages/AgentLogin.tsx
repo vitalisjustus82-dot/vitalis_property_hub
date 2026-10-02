@@ -13,7 +13,7 @@ const AgentLogin: React.FC = () => {
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
     if (error) alert(error.message);
-    else window.location.href = '/agent/dashboard';
+else window.location.href = '/agent/profile';
   };
 
   return (
