@@ -21,7 +21,7 @@ import {
   IonBackButton
 } from "@ionic/react";
 import { camera, add, videocam, images, logoWhatsapp, logOut } from "ionicons/icons";
-import { supabase } from "../supabase";
+import { supabase } from "../supabase/supabaseClient";
 
 const AgentProfile = () => {
   const history = useHistory();
@@ -31,7 +31,7 @@ const AgentProfile = () => {
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
 
-  // Add apartment form
+  
   const [showAdd, setShowAdd] = useState(false);
   const [newApt, setNewApt] = useState({ title: "", price: "", location: "", description: "" });
   const [mediaFiles, setMediaFiles] = useState<FileList | null>(null);
