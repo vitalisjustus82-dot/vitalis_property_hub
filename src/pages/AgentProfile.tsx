@@ -42,10 +42,10 @@ const AgentProfile = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        setLoading(false);
-        history.push("/agent/login");
-        return;
-      }
+  setLoading(false);
+  setUser(null);
+  return; 
+}
       setUser(user);
       try {
         const { data: prof } = await supabase.from("profiles").select("*").eq("id", user.id).single();
@@ -97,7 +97,14 @@ const AgentProfile = () => {
     <IonPage>
       <IonHeader><IonToolbar><IonButtons slot="start"><IonBackButton /></IonButtons><IonTitle>Agent Profile</IonTitle><IonButtons slot="end"><IonButton onClick={async()=>{await supabase.auth.signOut(); history.push("/agent/login")}}><IonIcon icon={logOut}/></IonButton></IonButtons></IonToolbar></IonHeader>
       <IonContent className="ion-padding">
-        <div style={{textAlign:'center', padding:'20px', background:'#f0f2f5', borderRadius:'15px'}}>
+  {!user && !loading && (
+    <div style={{textAlign:'center', marginTop:'100px'}}>
+      <h2>Please Login First</h2>
+      <IonButton onClick={()=> history.push("/agent/login")}>Go to Login</IonButton>
+    </div>
+  )}
+
+ <div style={{textAlign:'center', padding:'20px', background:'#f0f2f5', borderRadius:'15px'}}>
           <div style={{position:'relative', display:'inline-block'}}>
             <IonAvatar style={{width:'120px', height:'120px', margin:'0 auto'}}><img src={profile?.avatar_url || "https://ionicframework.com/docs/img/demos/avatar.svg"} /></IonAvatar>
             <label htmlFor="av" style={{position:'absolute', bottom:0, right:0, background:'#1877f2', borderRadius:'50%', padding:'8px', cursor:'pointer'}}><IonIcon icon={camera} style={{color:'white'}}/></label>
