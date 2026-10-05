@@ -12,26 +12,46 @@ const AgentSignup: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   const handleSignup = async () => {
-    if (!fullName || !phone || !whatsapp || !email || !password) {
-      alert('Please fill all fields'); return;
-    }
-    if (agree !== 'agree') {
-      alert('You must AGREE to the commission policy to create account. If you Disagree, you cannot register.');
-      return;
-    }
-    setLoading(true);
-    const { error } = await (supabase.from("profiles") as any).insert({ 
+  if (!fullName || !phone || !email || !password) {
+    alert('Please fill all fields'); return;
+  }
+  if (agree !== 'agree') {
+    alert('You must AGREE to the commission policy to create account. If you Disagree, you cannot register.');
+    return;
+  }
+  setLoading(true);
+  try {
+    // 1. Create auth user first
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email,
+      password,
+    });
+
+    if (signUpError) throw signUpError;
+    
+    const userId = data.user?.id;
+    if (!userId) throw new Error("Signup failed - no user id");
+
+    // 2. Then create profile with that id
+    const { error } = await (supabase.from("profiles") as any).insert({
+      id: userId,
       full_name: fullName,
       phone_number: phone,
       whatsapp_number: whatsapp,
       email,
-    agreed_to_commission: true
-});
-    setLoading(false);
-    if (error) { alert(error.message); return; }
+      agreed_to_commission: true
+    });
+
+    if (error) throw error;
+
     alert('Account created successfully! Awaiting verification.');
     setFullName(''); setPhone(''); setWhatsapp(''); setEmail(''); setPassword(''); setAgree('');
-  };
+  } catch (err: any) {
+    alert(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const inputStyle = {
     border: '1px solid #e5e7eb',
