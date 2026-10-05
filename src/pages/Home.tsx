@@ -58,9 +58,7 @@ import './Home.css';
               <button onClick={() => history.push('/agent/login')} style={{ background: 'transparent', color: 'white', border: '1px solid #c9a86a', padding: '7px 16px', borderRadius: '20px', fontWeight: 700, fontSize: '12px', cursor: 'pointer' }}>Login</button>
               <button onClick={() => history.push('/agent/signup')} style={{ background: '#d4af37', color: 'black', border: 'none', padding: '7px 18px', borderRadius: '20px', fontWeight: 800, fontSize: '12px', cursor: 'pointer' }}>Register</button>
             </div>
-          ) : (
-            <button onClick={() => history.push('/agent/dashboard')} style={{ background: '#d4af37', color: 'black', border: 'none', padding: '7px 18px', borderRadius: '20px', fontWeight: 800, fontSize: '12px', cursor: 'pointer' }}>Dashboard</button>
-          )}
+    ) : null} 
         </div>
         {/* HERO */}
         <section className="hero">
