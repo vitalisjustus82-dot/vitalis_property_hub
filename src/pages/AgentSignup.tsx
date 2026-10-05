@@ -25,9 +25,8 @@ const AgentSignup: React.FC = () => {
       phone_number: phone,
       whatsapp_number: whatsapp,
       email,
-      agreed_to_commission: true,
-      status: 'pending'
-    });
+    agreed_to_commission: true
+});
     setLoading(false);
     if (error) { alert(error.message); return; }
     alert('Account created successfully! Awaiting verification.');
