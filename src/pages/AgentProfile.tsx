@@ -100,7 +100,9 @@ const AgentProfile: React.FC = () => {
                 <img src={profile?.avatar_url || `https://ui-avatars.com/api/?name=${profile?.full_name}`} alt="" />
                 <button onClick={() => history.push("/agent/post")}>What's new listing, {profile?.full_name?.split(" ")[0]}?</button>
               </div>
-              <IonButton expand="block" className="gold-btn" onClick={() => history.push("/agent/post")}><IonIcon icon={addOutline} /> POST NEW APARTMENT</IonButton>
+              <button onClick={() => history.push('/admin/apartments/new')} style={{ background: '#d4af37', width: '100%', padding: '12px', borderRadius: '6px', fontWeight: 800, border: 'none', cursor: 'pointer' }}>
+    + POST NEW APARTMENT
+</button>
             </div>
 
             <div className="fb-card">
