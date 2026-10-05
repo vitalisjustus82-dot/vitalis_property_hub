@@ -78,7 +78,7 @@ const AgentProfile: React.FC = () => {
             <div className="fb-card">
               <h3>Intro</h3>
               <div className="fb-intro-item"><IonIcon icon={mailOutline} /> {user.email}</div>
-              <div className="fb-intro-item"><IonIcon icon={locationOutline} /> Based in Port Harcourt</div>
+              <div className="fb-intro-item"><IonIcon icon={locationOutline} /> Based in Calabar, Cross River</div>
               <div className="fb-intro-item"><IonIcon icon={shieldCheckmarkOutline} /> Verified Agent • Joined {new Date(user.created_at).getFullYear()}</div>
               <IonButton expand="block" className="fb-edit-btn">Edit details</IonButton>
             </div>
