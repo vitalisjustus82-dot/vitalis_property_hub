@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { IonPage, IonContent, IonInput, IonButton } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
 
 const AgentSignup: React.FC = () => {
   const [fullName, setFullName] = useState('');
@@ -10,6 +11,7 @@ const AgentSignup: React.FC = () => {
   const [password, setPassword] = useState('');
   const [agree, setAgree] = useState('');
   const [loading, setLoading] = useState(false);
+  const history = useHistory();
 
   const handleSignup = async () => {
   if (!fullName || !phone || !email || !password) {
@@ -44,8 +46,9 @@ const AgentSignup: React.FC = () => {
 
     if (error) throw error;
 
-    alert('Account created successfully! Awaiting verification.');
-    setFullName(''); setPhone(''); setWhatsapp(''); setEmail(''); setPassword(''); setAgree('');
+    // Auto login + redirect to profile
+history.push('/agent/profile');
+
   } catch (err: any) {
     alert(err.message);
   } finally {
