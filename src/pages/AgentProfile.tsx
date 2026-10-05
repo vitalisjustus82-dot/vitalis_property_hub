@@ -1,151 +1,118 @@
-import { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import {
-  IonPage,
-  IonContent,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonAvatar,
-  IonIcon,
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonInput,
-  IonTextarea,
-  IonSpinner,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonButtons,
-  IonBackButton
-} from "@ionic/react";
-import { camera, add, images, logoWhatsapp, logOutOutline } from "ionicons/icons";
-import { supabase } from "../lib/supabase";
+import React, { useEffect, useState } from 'react';
+import { IonPage, IonContent, IonButton, IonIcon, IonSpinner } from '@ionic/react';
+import { camera, addOutline, logOutOutline, locationOutline, mailOutline, shieldCheckmarkOutline, imagesOutline } from 'ionicons/icons';
+import { supabase } from '../lib/supabase';
+import { useHistory } from 'react-router-dom';
+import PropertyCard from '../components/PropertyCard';
+// @ts-ignore
+import './AgentProfile.css';
 
-const AgentProfile = () => {
-  const history = useHistory();
+const AgentProfile: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [apartments, setApartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [uploading, setUploading] = useState(false);
-  const [showAdd, setShowAdd] = useState(false);
-  const [newApt, setNewApt] = useState({ title: "", price: "", location: "", description: "" });
-  const [mediaFiles, setMediaFiles] = useState<FileList | null>(null);
+  const history = useHistory();
 
-  useEffect(() => {
-    fetchAll();
-  }, []);
+  useEffect(() => { fetchAll(); }, []);
 
   const fetchAll = async () => {
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-  setLoading(false);
-  setUser(null);
-  return; 
-}
-      setUser(user);
-      try {
-        const { data: prof } = await supabase.from("profiles").select("*").eq("id", user.id).single();
-        setProfile(prof);
-      } catch(e){}
-      try {
-        const { data: apts } = await supabase.from("apartments").select("*").eq("agent_id", user.id).order("created_at", {ascending: false});
-        setApartments(apts || []);
-      } catch(e){}
-    } catch(e){ console.log(e) } finally { setLoading(false) }
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { setLoading(false); return; }
+    setUser(user);
+    const { data: prof } = await (supabase.from("profiles") as any).select("*").eq("id", user.id).single();
+    setProfile(prof);
+    const { data: apts } = await (supabase.from("apartments") as any).select("*").eq("agent_id", user.id).order("created_at", { ascending: false });
+    setApartments(apts || []);
+    setLoading(false);
   };
 
-  const uploadAvatar = async (e: any) => {
-    const file = e.target.files[0];
-    if(!file ||!user) return;
-    setUploading(true);
-    const fileName = `${user.id}-${Date.now()}.${file.name.split('.').pop()}`;
-    const { error } = await supabase.storage.from("avatars").upload(fileName, file, {upsert: true});
-    if(!error){
-      const { data } = supabase.storage.from("avatars").getPublicUrl(fileName);
-      await (supabase.from("profiles") as any).upsert({ id: user.id, avatar_url: data.publicUrl, email: user.email });
-      setProfile({...profile, avatar_url: data.publicUrl});
-    }
-    setUploading(false);
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    history.push("/agent/login");
   };
 
-  const handleAddApartment = async () => {
-    if(!newApt.title ||!mediaFiles) return alert("Add title and media");
-    setUploading(true);
-    const urls: string[] = [];
-    for(let i=0; i<mediaFiles.length; i++){
-      const f = mediaFiles[i];
-      const name = `${user.id}/${Date.now()}-${f.name}`;
-      const { error } = await supabase.storage.from("apartment-media").upload(name, f);
-      if(!error){
-        const { data } = supabase.storage.from("apartment-media").getPublicUrl(name);
-        urls.push(data.publicUrl);
-      }
-    }
-    await (supabase.from("apartments") as any).insert({ agent_id: user.id, title: newApt.title, price: newApt.price, location: newApt.location, description: newApt.description, media_urls: urls });
-    setUploading(false);
-    setShowAdd(false);
-    fetchAll();
-  };
+  if (loading) return <IonPage><IonContent className="ion-padding ion-text-center"><IonSpinner /></IonContent></IonPage>;
 
-  if(loading) return <IonPage><IonContent className="ion-padding"><IonSpinner /></IonContent></IonPage>;
+  if (!user) {
+    return (
+      <IonPage>
+        <IonContent className="fb-profile-empty">
+          <h2>Please Login First</h2>
+          <IonButton onClick={() => history.push("/agent/login")} className="gold-btn">GO TO LOGIN</IonButton>
+        </IonContent>
+      </IonPage>
+    );
+  }
 
   return (
     <IonPage>
-      <IonHeader><IonToolbar><IonButtons slot="start"><IonBackButton /></IonButtons><IonTitle>Agent Profile</IonTitle><IonButtons slot="end"><IonButton onClick={async()=>{await supabase.auth.signOut(); history.push("/agent/login")}}><IonIcon icon={logOutOutline}/></IonButton></IonButtons></IonToolbar></IonHeader>
-      <IonContent className="ion-padding">
-  {!user && !loading && (
-    <div style={{textAlign:'center', marginTop:'100px'}}>
-      <h2>Please Login First</h2>
-      <IonButton onClick={()=> history.push("/agent/login")}>Go to Login</IonButton>
-    </div>
-  )}
-
- <div style={{textAlign:'center', padding:'20px', background:'#f0f2f5', borderRadius:'15px'}}>
-          <div style={{position:'relative', display:'inline-block'}}>
-            <IonAvatar style={{width:'120px', height:'120px', margin:'0 auto'}}><img src={profile?.avatar_url || "https://ionicframework.com/docs/img/demos/avatar.svg"} /></IonAvatar>
-            <label htmlFor="av" style={{position:'absolute', bottom:0, right:0, background:'#1877f2', borderRadius:'50%', padding:'8px', cursor:'pointer'}}><IonIcon icon={camera} style={{color:'white'}}/></label>
-            <input id="av" type="file" hidden accept="image/*" onChange={uploadAvatar} />
+      <IonContent fullscreen className="fb-bg">
+        {/* COVER */}
+        <div className="fb-cover-wrap">
+          <div className="fb-cover"></div>
+          <div className="fb-cover-overlay">
+            <div className="fb-avatar-wrap">
+              <img src={profile?.avatar_url || `https://ui-avatars.com/api/?name=${profile?.full_name || user.email}&background=0a1931&color=fff`} alt="avatar" className="fb-avatar" />
+              <button className="fb-camera-btn"><IonIcon icon={camera} /></button>
+            </div>
+            <div className="fb-name-block">
+              <h1>{profile?.full_name || "Agent Name"} {profile?.is_verified && <IonIcon icon={shieldCheckmarkOutline} className="verified" />}</h1>
+              <p>@{user.email?.split("@")[0]} • {apartments.length} listings • Agent</p>
+              <div className="fb-actions">
+                <IonButton size="small" className="fb-btn-primary" onClick={() => history.push("/agent/post")}><IonIcon icon={addOutline} /> Add to Story</IonButton>
+                <IonButton size="small" fill="outline" className="fb-btn-outline">Edit Profile</IonButton>
+                <IonButton size="small" fill="clear" onClick={handleLogout}><IonIcon icon={logOutOutline} /></IonButton>
+              </div>
+            </div>
           </div>
-          <h2>{profile?.full_name || user?.email}</h2>
-          <p style={{color:'gray'}}>{user?.email}</p>
-          {uploading && <IonSpinner />}
         </div>
 
-        <IonButton expand="block" onClick={()=>setShowAdd(!showAdd)} style={{margin:'15px 0'}}><IonIcon icon={add} slot="start"/> {showAdd? "Cancel" : "Post New Apartment"}</IonButton>
+        <div className="fb-tabs">
+          <span className="active">Posts</span><span>About</span><span>Listings</span><span>Photos</span><span>Reviews</span><span>More</span>
+        </div>
 
-        {showAdd && (
-          <IonCard><IonCardContent>
-            <IonInput label="Title" labelPlacement="floating" fill="outline" value={newApt.title} onIonChange={e=>setNewApt({...newApt, title: e.detail.value!})} style={{marginBottom:'10px'}}/>
-            <IonInput label="Price" labelPlacement="floating" fill="outline" value={newApt.price} onIonChange={e=>setNewApt({...newApt, price: e.detail.value!})} style={{marginBottom:'10px'}}/>
-            <IonInput label="Location" labelPlacement="floating" fill="outline" value={newApt.location} onIonChange={e=>setNewApt({...newApt, location: e.detail.value!})} style={{marginBottom:'10px'}}/>
-            <IonTextarea label="Description" labelPlacement="floating" fill="outline" value={newApt.description} onIonChange={e=>setNewApt({...newApt, description: e.detail.value!})} style={{marginBottom:'10px'}}/>
-            <input type="file" multiple accept="image/*,video/*" onChange={e=>setMediaFiles(e.target.files)} style={{margin:'10px 0'}}/>
-            <IonButton expand="block" onClick={handleAddApartment} disabled={uploading}>{uploading? <IonSpinner/> : "Post"}</IonButton>
-          </IonCardContent></IonCard>
-        )}
+        <div className="fb-layout">
+          {/* LEFT - INTRO */}
+          <div className="fb-left">
+            <div className="fb-card">
+              <h3>Intro</h3>
+              <div className="fb-intro-item"><IonIcon icon={mailOutline} /> {user.email}</div>
+              <div className="fb-intro-item"><IonIcon icon={locationOutline} /> Based in Port Harcourt</div>
+              <div className="fb-intro-item"><IonIcon icon={shieldCheckmarkOutline} /> Verified Agent • Joined {new Date(user.created_at).getFullYear()}</div>
+              <IonButton expand="block" className="fb-edit-btn">Edit details</IonButton>
+            </div>
 
-        <h3><IonIcon icon={images}/> Your Posts ({apartments.length})</h3>
-        <IonGrid><IonRow>
-          {apartments.map((apt:any)=>(
-            <IonCol size="12" sizeMd="6" key={apt.id}>
-              <IonCard>
-                {apt.media_urls?.[0]?.includes("mp4")? <video src={apt.media_urls[0]} controls style={{width:'100%', maxHeight:'250px'}}/> : <img src={apt.media_urls?.[0] || "https://via.placeholder.com/300"} style={{width:'100%', height:'250px', objectFit:'cover'}}/>}
-                <IonCardContent>
-                  <h2>{apt.title}</h2><p>{apt.location} - ₦{apt.price}</p>
-                  <IonButton expand="block" color="success" onClick={()=>{
-                    const num = "2348012345678"; // CHANGE TO YOUR NUMBER
-                    const msg = `Hello, I'm interested in ${apt.title} at ${apt.location}. Agent: ${profile?.full_name || user.email}`;
-                    window.open(`https://wa.me/${num}?text=${encodeURIComponent(msg)}`, "_blank");
-                  }}><IonIcon icon={logoWhatsapp} slot="start"/> Enquire on WhatsApp</IonButton>
-                </IonCardContent>
-              </IonCard>
-            </IonCol>
-          ))}
-        </IonRow></IonGrid>
+            <div className="fb-card">
+              <div className="fb-card-head"><h3>Photos • {apartments.length}</h3><span>See all</span></div>
+              <div className="fb-photo-grid">
+                {apartments.slice(0, 6).map((apt, i) => (
+                  <img key={i} src={apt.media_urls?.[0] || 'https://via.placeholder.com/300'} alt="" />
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT - POSTS */}
+          <div className="fb-right">
+            <div className="fb-card fb-create-post">
+              <div className="fb-create-top">
+                <img src={profile?.avatar_url || `https://ui-avatars.com/api/?name=${profile?.full_name}`} alt="" />
+                <button onClick={() => history.push("/agent/post")}>What's new listing, {profile?.full_name?.split(" ")[0]}?</button>
+              </div>
+              <IonButton expand="block" className="gold-btn" onClick={() => history.push("/agent/post")}><IonIcon icon={addOutline} /> POST NEW APARTMENT</IonButton>
+            </div>
+
+            <div className="fb-card">
+              <div className="fb-card-head"><h3><IonIcon icon={imagesOutline} /> Your Posts ({apartments.length})</h3></div>
+              {apartments.length === 0? <p className="no-post">No posts yet. Create your first listing!</p> :
+                <div className="fb-posts-grid">
+                  {apartments.map((apt) => <PropertyCard key={apt.id} apartment={apt} />)}
+                </div>
+              }
+            </div>
+          </div>
+        </div>
       </IonContent>
     </IonPage>
   );
