@@ -35,14 +35,14 @@ const AgentSignup: React.FC = () => {
     if (!userId) throw new Error("Signup failed - no user id");
 
     // 2. Then create profile with that id
-    const { error } = await (supabase.from("profiles") as any).insert({
-      id: userId,
-      full_name: fullName,
-      phone_number: phone,
-      whatsapp_number: whatsapp,
-      email,
-      agreed_to_commission: true
-    });
+   const { error } = await (supabase.from("profiles") as any).upsert({
+  id: userId,
+  full_name: fullName,
+  phone_number: phone,
+  whatsapp_number: whatsapp,
+  email,
+  agreed_to_commission: true
+}, { onConflict: 'id' });
 
     if (error) throw error;
 
