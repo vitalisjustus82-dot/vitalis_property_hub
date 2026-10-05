@@ -20,7 +20,7 @@ const AgentSignup: React.FC = () => {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.from('agents').insert({
+    const { error } = await (supabase.from("profiles") as any).insert({ 
       full_name: fullName,
       phone_number: phone,
       whatsapp_number: whatsapp,

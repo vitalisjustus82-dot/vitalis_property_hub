@@ -12,6 +12,7 @@ import { supabase } from '../lib/supabase';
 import type { Apartment, ApartmentCategory } from '../types/database';
 import PropertyCard from '../components/PropertyCard';
 import WhatsAppFloat from '../components/WhatsAppFloat';
+// @ts-ignore
 import './Apartments.css';
 
 const FILTERS: { label: string; value: ApartmentCategory | 'all' }[] = [
