@@ -17,6 +17,7 @@ import { supabase } from '../lib/supabase';
 import type { Apartment } from '../types/database';
 import PropertyCard from '../components/PropertyCard';
 import WhatsAppFloat from '../components/WhatsAppFloat';
+// @ts-ignore
 import './Home.css';
 
  const Home: React.FC = () => {
