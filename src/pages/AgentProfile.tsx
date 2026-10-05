@@ -21,7 +21,7 @@ import {
   IonBackButton
 } from "@ionic/react";
 import { camera, add, images, logoWhatsapp, logOut } from "ionicons/icons";
-import { supabase } from "../supabase/supabaseClient";
+import { supabase } from '../lib/supabase';
 
 const AgentProfile = () => {
   const history = useHistory();
