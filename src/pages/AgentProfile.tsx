@@ -20,8 +20,8 @@ import {
   IonButtons,
   IonBackButton
 } from "@ionic/react";
-import { camera, add, images, logoWhatsapp, logOut } from "ionicons/icons";
-import { supabase } from '../lib/supabase';
+import { camera, add, images, logoWhatsapp, logOutOutline } from "ionicons/icons";
+import { supabase } from "../lib/supabase";
 
 const AgentProfile = () => {
   const history = useHistory();
@@ -66,7 +66,7 @@ const AgentProfile = () => {
     const { error } = await supabase.storage.from("avatars").upload(fileName, file, {upsert: true});
     if(!error){
       const { data } = supabase.storage.from("avatars").getPublicUrl(fileName);
-      await supabase.from("profiles").upsert({ id: user.id, avatar_url: data.publicUrl, email: user.email });
+      await (supabase.from("profiles") as any).upsert({ id: user.id, avatar_url: data.publicUrl, email: user.email });
       setProfile({...profile, avatar_url: data.publicUrl});
     }
     setUploading(false);
@@ -85,7 +85,7 @@ const AgentProfile = () => {
         urls.push(data.publicUrl);
       }
     }
-    await supabase.from("apartments").insert({ agent_id: user.id, title: newApt.title, price: newApt.price, location: newApt.location, description: newApt.description, media_urls: urls });
+    await (supabase.from("apartments") as any).insert({ agent_id: user.id, title: newApt.title, price: newApt.price, location: newApt.location, description: newApt.description, media_urls: urls });
     setUploading(false);
     setShowAdd(false);
     fetchAll();
@@ -95,7 +95,7 @@ const AgentProfile = () => {
 
   return (
     <IonPage>
-      <IonHeader><IonToolbar><IonButtons slot="start"><IonBackButton /></IonButtons><IonTitle>Agent Profile</IonTitle><IonButtons slot="end"><IonButton onClick={async()=>{await supabase.auth.signOut(); history.push("/agent/login")}}><IonIcon icon={logOut}/></IonButton></IonButtons></IonToolbar></IonHeader>
+      <IonHeader><IonToolbar><IonButtons slot="start"><IonBackButton /></IonButtons><IonTitle>Agent Profile</IonTitle><IonButtons slot="end"><IonButton onClick={async()=>{await supabase.auth.signOut(); history.push("/agent/login")}}><IonIcon icon={logOutOutline}/></IonButton></IonButtons></IonToolbar></IonHeader>
       <IonContent className="ion-padding">
   {!user && !loading && (
     <div style={{textAlign:'center', marginTop:'100px'}}>
