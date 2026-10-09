@@ -27,6 +27,7 @@ const Apartments: React.FC = () => {
   const [apartments, setApartments] = useState<Apartment[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeFilter, setActiveFilter] = useState<ApartmentCategory | 'all'>('all');
+const [streetSearch, setStreetSearch] = useState("");
 
   useEffect(() => {
     let active = true;
@@ -39,19 +40,23 @@ const Apartments: React.FC = () => {
         .order('created_at', { ascending: false });
 
       if (activeFilter !== 'all') {
-        query = query.eq('category', activeFilter);
-      }
+  query = query.eq('category', activeFilter);
+}
+if (streetSearch) {
+  query = query.ilike('location', `%${streetSearch}%`);
+}
 
       const { data, error } = await query;
       if (active) {
         if (!error && data) setApartments(data as Apartment[]);
         setLoading(false);
       }
+      
     })();
     return () => {
       active = false;
     };
-  }, [activeFilter]);
+  }, [activeFilter, streetSearch]);
 
   return (
     <IonPage>
@@ -67,6 +72,15 @@ const Apartments: React.FC = () => {
             <IonTitle size="large">Apartments</IonTitle>
           </IonToolbar>
         </IonHeader>
+
+        <div style={{marginBottom:'12px'}}>
+  <input 
+    value={streetSearch}
+    onChange={(e)=>setStreetSearch(e.target.value)}
+    placeholder="Search street e.g. Goldie, Ekpo Obasi, State Housing"
+    style={{width:'100%', padding:'10px 14px', borderRadius:'20px', border:'1px solid #ccc'}}
+  />
+</div>
 
         <div className="apartments-page">
           <p className="intro">
