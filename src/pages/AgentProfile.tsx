@@ -103,7 +103,7 @@ const handleFileChange = async (e: any) => {
         </div>
 
         <div className="fb-tabs">
-          <span className="active">Posts</span><span>About</span><span>Listings</span><span>Photos</span><span>Reviews</span><span>More</span>
+          <span className="active">Posts</span><span>Photos/Videos</span><span>Reviews</span>
         </div>
 
         <div className="fb-layout">
