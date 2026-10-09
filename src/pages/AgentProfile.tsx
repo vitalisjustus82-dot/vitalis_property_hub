@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { IonPage, IonContent, IonButton, IonIcon, IonSpinner } from '@ionic/react';
 import { camera, addOutline, logOutOutline, locationOutline, mailOutline, shieldCheckmarkOutline, imagesOutline } from 'ionicons/icons';
 import { supabase } from '../lib/supabase';
@@ -13,6 +13,32 @@ const AgentProfile: React.FC = () => {
   const [apartments, setApartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const history = useHistory();
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+const [uploading, setUploading] = useState(false);
+
+const handleAvatarClick = () => {
+  fileInputRef.current?.click();
+};
+
+const handleFileChange = async (e: any) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  setUploading(true);
+  try {
+    const fileName = `${user.id}_${Date.now()}`;
+    const { error } = await supabase.storage.from('avatars').upload(fileName, file);
+    if (error) throw error;
+    const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
+    await (supabase.from("profiles") as any).update({ avatar_url: data.publicUrl }).eq("id", user.id);
+    setProfile({...profile, avatar_url: data.publicUrl });
+  } catch (err) {
+    alert("Upload failed");
+    console.log(err);
+  } finally {
+    setUploading(false);
+  }
+};
 
   useEffect(() => { fetchAll(); }, []);
 
@@ -54,13 +80,21 @@ const AgentProfile: React.FC = () => {
           <div className="fb-cover-overlay">
             <div className="fb-avatar-wrap">
               <img src={profile?.avatar_url || `https://ui-avatars.com/api/?name=${profile?.full_name || user.email}&background=0a1931&color=fff`} alt="avatar" className="fb-avatar" />
-              <button className="fb-camera-btn"><IonIcon icon={camera} /></button>
+            <div className="camera-icon" onClick={handleAvatarClick} style={{cursor: 'pointer'}}>
+  📷
+</div>
+                <input
+  type="file"
+  ref={fileInputRef}
+  onChange={handleFileChange}
+  accept="image/*"
+  style={{ display: 'none' }}
+/>
             </div>
             <div className="fb-name-block">
               <h1>{profile?.full_name || "Agent Name"} {profile?.is_verified && <IonIcon icon={shieldCheckmarkOutline} className="verified" />}</h1>
               <p>@{user.email?.split("@")[0]} • {apartments.length} listings • Agent</p>
               <div className="fb-actions">
-                <IonButton size="small" className="fb-btn-primary" onClick={() => history.push("/agent/post")}><IonIcon icon={addOutline} /> Add to Story</IonButton>
                 <IonButton size="small" fill="outline" className="fb-btn-outline">Edit Profile</IonButton>
                 <IonButton size="small" fill="clear" onClick={handleLogout}><IonIcon icon={logOutOutline} /></IonButton>
               </div>
