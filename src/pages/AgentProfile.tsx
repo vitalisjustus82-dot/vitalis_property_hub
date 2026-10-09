@@ -12,6 +12,7 @@ const AgentProfile: React.FC = () => {
   const [profile, setProfile] = useState<any>(null);
   const [apartments, setApartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('posts');
   const history = useHistory();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -26,20 +27,20 @@ const handleFileChange = async (e: any) => {
   if (!file) return;
   setUploading(true);
   try {
-    const fileName = `${user.id}_${Date.now()}`;
-    const { error } = await supabase.storage.from('avatars').upload(fileName, file);
+    const ext = file.name.split('.').pop();
+    const fileName = `${user.id}/${Date.now()}.${ext}`;
+    const { error } = await supabase.storage.from('avatars').upload(fileName, file, { upsert: true });
     if (error) throw error;
     const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
     await (supabase.from("profiles") as any).update({ avatar_url: data.publicUrl }).eq("id", user.id);
     setProfile({...profile, avatar_url: data.publicUrl });
-  } catch (err) {
-    alert("Upload failed");
+  } catch (err: any) {
+    alert("Upload failed: " + err.message);
     console.log(err);
   } finally {
     setUploading(false);
   }
 };
-
   useEffect(() => { fetchAll(); }, []);
 
   const fetchAll = async () => {
@@ -102,10 +103,29 @@ const handleFileChange = async (e: any) => {
           </div>
         </div>
 
-        <div className="fb-tabs">
-          <span className="active">Posts</span><span>Photos/Videos</span><span>Reviews</span>
-        </div>
+<div className="fb-tabs" style={{display:'flex', gap:'20px', padding:'10px 20px', background:'white', marginTop:'10px'}}>
+  <span onClick={()=>setActiveTab('posts')} style={{cursor:'pointer', fontWeight: activeTab==='posts'? 700 : 400, borderBottom: activeTab==='posts'? '3px solid #1877f2' : 'none', color: activeTab==='posts'? '#1877f2' : '#000'}}>Posts</span>
+  <span onClick={()=>setActiveTab('photos')} style={{cursor:'pointer', fontWeight: activeTab==='photos'? 700 : 400, borderBottom: activeTab==='photos'? '3px solid #1877f2' : 'none', color: activeTab==='photos'? '#1877f2' : '#000'}}>Photos/Videos</span>
+  <span onClick={()=>setActiveTab('reviews')} style={{cursor:'pointer', fontWeight: activeTab==='reviews'? 700 : 400, borderBottom: activeTab==='reviews'? '3px solid #1877f2' : 'none', color: activeTab==='reviews'? '#1877f2' : '#000'}}>Reviews</span>
+</div>
 
+{activeTab === 'photos' && (
+  <div style={{background:'white', padding:'12px', display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'6px'}}>
+    {apartments.length === 0 ? (
+      <div style={{gridColumn:'1/4', textAlign:'center', padding:'40px'}}>No photos yet. Post your first apartment!</div>
+    ) : (
+      apartments.flatMap((a:any) => a.images || a.image_urls || (a.image_url ? [a.image_url] : [])).map((url:string, i:number)=>(
+        <img key={i} src={url} style={{width:'100%', height:'150px', objectFit:'cover', borderRadius:'8px'}} />
+      ))
+    )}
+  </div>
+)}
+
+{activeTab === 'reviews' && (
+  <div style={{background:'white', padding:'40px', textAlign:'center'}}>No reviews yet.</div>
+)}
+
+{activeTab === 'posts' && (
         <div className="fb-layout">
           {/* LEFT - INTRO */}
           <div className="fb-left">
@@ -125,8 +145,7 @@ const handleFileChange = async (e: any) => {
                 ))}
               </div>
             </div>
-          </div>
-
+          </div> 
           {/* RIGHT - POSTS */}
           <div className="fb-right">
             <div className="fb-card fb-create-post">
@@ -149,9 +168,11 @@ const handleFileChange = async (e: any) => {
             </div>
           </div>
         </div>
+)}
       </IonContent>
     </IonPage>
-  );
+
+);
 };
 
 export default AgentProfile;
