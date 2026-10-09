@@ -80,7 +80,7 @@ const handleFileChange = async (e: any) => {
           <div className="fb-cover-overlay">
             <div className="fb-avatar-wrap">
               <img src={profile?.avatar_url || `https://ui-avatars.com/api/?name=${profile?.full_name || user.email}&background=0a1931&color=fff`} alt="avatar" className="fb-avatar" />
-            <div className="camera-icon" onClick={handleAvatarClick} style={{cursor: 'pointer'}}>
+            <div className="fb-camera-btn" onClick={handleAvatarClick} style={{cursor: 'pointer'}}>
               <IonIcon icon={camera} />              
               </div>
                 <input
