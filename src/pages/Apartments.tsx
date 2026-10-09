@@ -36,7 +36,6 @@ const [streetSearch, setStreetSearch] = useState("");
       let query = supabase
         .from('apartments')
         .select('*')
-        .eq('status', 'available')
         .order('created_at', { ascending: false });
 
       if (activeFilter !== 'all') {
