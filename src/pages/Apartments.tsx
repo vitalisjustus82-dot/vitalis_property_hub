@@ -29,33 +29,62 @@ const Apartments: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<ApartmentCategory | 'all'>('all');
 const [streetSearch, setStreetSearch] = useState("");
 
-  useEffect(() => {
-    let active = true;
-    (async () => {
-      setLoading(true);
+  
+useEffect(() => {
+  let active = true;
+
+  const fetchApartments = async () => {
+    setLoading(true);
+
+    try {
       let query = supabase
         .from('apartments')
         .select('*')
         .order('created_at', { ascending: false });
 
       if (activeFilter !== 'all') {
-  query = query.eq('category', activeFilter);
-}
-if (streetSearch) {
-  query = query.ilike('location', `%${streetSearch}%`);
-}
+        query = query.eq('category', activeFilter);
+      }
+
+      if (streetSearch.trim()) {
+        query = query.ilike(
+          'location',
+          `%${streetSearch.trim()}%`
+        );
+      }
 
       const { data, error } = await query;
+
+      if (error) {
+        console.error('Failed to fetch apartments:', error);
+        if (active) {
+          setApartments([]);
+        }
+        return;
+      }
+
       if (active) {
-        if (!error && data) setApartments(data as Apartment[]);
+        setApartments(data as Apartment[]);
+      }
+    } catch (err) {
+      console.error('Unexpected apartments error:', err);
+
+      if (active) {
+        setApartments([]);
+      }
+    } finally {
+      if (active) {
         setLoading(false);
       }
-      
-    })();
-    return () => {
-      active = false;
-    };
-  }, [activeFilter, streetSearch]);
+    }
+  };
+
+  fetchApartments();
+
+  return () => {
+    active = false;
+  };
+}, [activeFilter, streetSearch]);
 
   return (
     <IonPage>
