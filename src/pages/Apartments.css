@@ -1,70 +1,13 @@
-.apartments-page {
-  padding: 16px 18px 30px;
-}
-
-.intro {
-  color: var(--brand-muted);
-  font-size: 14px;
-  margin-bottom: 16px;
-}
-
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 18px;
-}
-
-.loading-row {
-  display: flex;
-  justify-content: center;
-  padding: 30px 0;
-}
-
-.empty-state {
-  color: var(--brand-muted);
-  font-size: 14px;
-  text-align: center;
-  padding: 30px 10px;
-}
-
-.cards-grid {
+.cards-grid{
   display: grid;
-  gap: 16px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  padding: 12px;
 }
-
-/* FIX: Square responsive grid */
-.apartment-grid,.home-listings {
-  display: grid!important;
-  grid-template-columns: repeat(2, 1fr)!important;
-  gap: 12px!important;
-  padding: 12px!important;
+@media(min-width: 900px){
+  .cards-grid{ grid-template-columns: repeat(3, 1fr); }
 }
-
-@media (min-width: 768px) {
- .apartment-grid,.home-listings {
-    grid-template-columns: repeat(3, 1fr)!important;
-  }
-}
-
-.apartment-card,.home-card {
-  border-radius: 12px!important;
-  overflow: hidden!important;
-  background: white!important;
-  display: flex!important;
-  flex-direction: column!important;
-}
-
-.apartment-card img,.home-card img {
-  width: 100%!important;
-  aspect-ratio: 1 / 1!important; /* makes it square */
-  object-fit: cover!important;
-  height: auto!important;
-}
-
-/* make View Details smaller inside square */
-.apartment-card.view-btn,.home-card button {
-  margin: 8px!important;
-  padding: 8px!important;
-  font-size: 12px!important;
+.cards-grid > * img{
+  aspect-ratio: 1/1;
+  object-fit: cover;
 }
