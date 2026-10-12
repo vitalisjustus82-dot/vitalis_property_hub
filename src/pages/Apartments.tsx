@@ -101,12 +101,18 @@ useEffect(() => {
           </IonToolbar>
         </IonHeader>
 
-        <div style={{marginBottom:'12px'}}>
-  <input 
+        <div style={{margin: '16px 16px 24px 16px'}}>
+  <input
     value={streetSearch}
     onChange={(e)=>setStreetSearch(e.target.value)}
-    placeholder="Search street e.g. Goldie, Ekpo Obasi, State Housing"
-    style={{width:'100%', padding:'10px 14px', borderRadius:'20px', border:'1px solid #ccc'}}
+    placeholder="Search street e.g Goldie, Ekpo Obasi"
+    style={{
+      width: '100%', 
+      padding: '12px 16px', 
+      borderRadius: '20px', 
+      border: '1px solid #ccc',
+      boxSizing: 'border-box' 
+    }}
   />
 </div>
 
