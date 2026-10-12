@@ -116,10 +116,10 @@ useEffect(() => {
   />
 </div>
 
-        <div className="apartments-page">
-          <p className="intro">
-            Browse apartments and check the details before contacting me for inspection.
-          </p>
+        <div className="apartments-page" style={{ padding: '0 16px' }}>
+  <p className="intro" style={{ margin: '8px 0 12px 0' }}>
+    Browse apartments and check the details before contacting me for inspection.
+  </p>
 
           <div className="filter-bar">
             {FILTERS.map((f) => (
