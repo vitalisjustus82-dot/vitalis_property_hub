@@ -110,13 +110,29 @@ const handleFileChange = async (e: any) => {
 </div>
 
 {activeTab === 'photos' && (
-  <div style={{background:'white', padding:'12px', display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'6px'}}>
+  <div style={{background:'white', padding:'12px'}}>
     {apartments.length === 0 ? (
-      <div style={{gridColumn:'1/4', textAlign:'center', padding:'40px'}}>No photos yet. Post your first apartment!</div>
+      <div style={{textAlign:'center', padding:'40px', color:'#777'}}>No photos yet. Post your first apartment!</div>
     ) : (
-      apartments.flatMap((a:any) => a.images || a.image_urls || (a.image_url ? [a.image_url] : [])).map((url:string, i:number)=>(
-        <img key={i} src={url} style={{width:'100%', height:'150px', objectFit:'cover', borderRadius:'8px'}} />
-      ))
+      <div style={{display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'6px'}}>
+        {apartments.flatMap((a:any) => {
+          const items:any[] = [];
+          // collect images
+          const imgs = a.images || a.image_urls || (a.image_url ? [a.image_url] : []);
+          // collect videos  
+          const vids = a.videos || a.video_urls || (a.video_url ? [a.video_url] : []);
+          
+          imgs.forEach((url:string) => items.push({url, type:'image', id: a.id}));
+          vids.forEach((url:string) => items.push({url, type:'video', id: a.id}));
+          return items;
+        }).map((item:any, idx:number) => (
+          item.type === 'image' ? (
+            <img key={idx} src={item.url} onClick={()=>history.push(`/apartments/${item.id}`)} style={{width:'100%', height:'130px', objectFit:'cover', borderRadius:'8px', cursor:'pointer'}} />
+          ) : (
+            <video key={idx} src={item.url} controls style={{width:'100%', height:'130px', objectFit:'cover', borderRadius:'8px'}} />
+          )
+        ))}
+      </div>
     )}
   </div>
 )}
