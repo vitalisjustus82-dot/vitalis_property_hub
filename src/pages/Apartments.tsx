@@ -37,10 +37,17 @@ useEffect(() => {
     setLoading(true);
 
     try {
-      let query = supabase
-        .from('apartments')
-        .select('*')
-        .order('created_at', { ascending: false });
+     let query = supabase
+  .from('apartments')
+  .select(`
+    *,
+    profiles:agent_id (
+      username,
+      full_name,
+      avatar_url
+    )
+  `)
+  .order('created_at', { ascending: false });
 
       if (activeFilter !== 'all') {
         query = query.eq('category', activeFilter);

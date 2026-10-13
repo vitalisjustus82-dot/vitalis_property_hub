@@ -22,6 +22,12 @@ export interface Apartment {
   featured: boolean;
   status: 'available' | 'taken' | 'reserved';
   created_at: string;
+  agent_id: string | null;
+  profiles?: {
+    username: string | null;
+    full_name: string | null;
+    avatar_url: string | null;
+  } | null;
 }
 
 export interface ContactMessage {
