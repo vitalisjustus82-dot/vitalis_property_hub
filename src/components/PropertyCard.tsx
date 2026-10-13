@@ -51,7 +51,7 @@ const PropertyCard: React.FC<Props> = ({ apartment }) => {
           <IonIcon icon={starSharp} />
         </div>
 
-        <div className="card-btn">View Details</div>
+        <div className="card-btn" onClick={() => history.push(`/apartments/${apartment.id}`)}>View Details</div>
       </div>
     </article>
   );
