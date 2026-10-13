@@ -174,10 +174,10 @@ const ApartmentForm: React.FC = () => {
       };
 
       if (isEdit) {
-        const { error } = await supabase.from('apartments').update(payload).eq('id', id);
+        const { error } = await (supabase.from('apartments') as any).update(payload).eq('id', id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('apartments').insert(payload);
+       const { error } = await (supabase.from('apartments') as any).insert(payload);
         if (error) throw error;
       }
 
