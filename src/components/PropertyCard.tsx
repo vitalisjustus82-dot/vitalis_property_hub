@@ -24,7 +24,10 @@ const PropertyCard: React.FC<Props> = ({ apartment }) => {
     >
       <div className="property-img">
         <img src={apartment.image_url ?? FALLBACK_IMAGE} alt={apartment.title} />
-        {apartment.featured && <IonBadge className="property-badge">Featured</IonBadge>}
+        {apartment.featured && <div className="badge featured">Featured</div>}
+<div className={`badge ${apartment.status?.toLowerCase()}`}>
+  {apartment.status}
+</div>
       </div>
 
       <div className="property-body">
