@@ -59,7 +59,7 @@ const PropertyCard: React.FC<Props> = ({ apartment }) => {
         }}
       />
       <span style={{ color: 'white', fontSize: '11px', fontWeight: 600, maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-        {apartment.profiles.username || apartment.profiles.full_name}
+        {apartment.profiles.full_name}
       </span>
     </div>
   )}
