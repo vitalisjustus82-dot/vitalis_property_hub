@@ -171,6 +171,7 @@ const ApartmentForm: React.FC = () => {
         video_url: finalVideoUrl,
         featured: form.featured,
         status: form.status,
+        agent_id: session?.user?.id,
       };
 
       if (isEdit) {
