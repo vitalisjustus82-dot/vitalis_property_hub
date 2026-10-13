@@ -41,8 +41,7 @@ useEffect(() => {
   .from('apartments')
   .select(`
     *,
-    profiles:agent_id (
-      username,
+    profiles (
       full_name,
       avatar_url
     )
