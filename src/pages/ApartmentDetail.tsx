@@ -86,7 +86,7 @@ const ApartmentDetail: React.FC = () => {
 
         {/* WhatsApp */}
         <a
-          href={`https://wa.me/2348000000000?text=I'm interested in ${apartment.title}`}
+          href={`https://wa.me/2347059559238?text=I'm interested in ${apartment.title}`}
           style={{ display: 'block', textAlign: 'center', marginTop: '24px', background: '#eab308', padding: '16px', borderRadius: '30px', fontWeight: 'bold', color: 'black', textDecoration: 'none' }}
         >
           Enquire on WhatsApp

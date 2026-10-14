@@ -58,7 +58,7 @@ const Contact: React.FC = () => {
     }
 
     setSubmitting(true);
-    const { error } = await supabase.from('contact_messages').insert({
+    const { error } = await (supabase as any).from('contact_messages').insert({
       name: name.trim(),
       phone: phone.trim(),
       looking_for: lookingFor,
