@@ -33,14 +33,25 @@ const ApartmentDetail: React.FC = () => {
  return (
   <IonPage>
     <IonContent>
-      {/* 1. MAIN IMAGE - like second image top */}
-      <div style={{ width: '100%', height: '300px', overflow: 'hidden' }}>
-        <img
-          src={apartment.media_urls?.[0]}
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          alt="apt"
-        />
-      </div>
+      {/* TOP IMAGE - FIX FOR BLANK WHITE BOX */}
+<div style={{ width: '100%', height: '300px', background: '#f0f0f0', overflow: 'hidden' }}>
+  <img
+    src={
+      apartment.media_urls?.[0] ||
+      apartment.image_url ||
+      apartment.cover_image ||
+      apartment.image ||
+      'https://via.placeholder.com/400x300?text=No+Image'
+    }
+    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+    alt="apartment"
+    onError={(e) => {
+      // If first image fails, try next one
+      const target = e.target as HTMLImageElement;
+      target.src = apartment.media_urls?.[1] || 'https://via.placeholder.com/400x300';
+    }}
+  />
+</div>
 
       <div style={{ padding: '16px', background: 'white' }}>
         {/* Title, Location, Price */}
