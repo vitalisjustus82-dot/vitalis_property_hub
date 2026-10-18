@@ -17,7 +17,7 @@ const AgentDashboard: React.FC = () => {
     <IonPage>
       <IonContent className="ion-padding">
         <IonTitle>My Listings: {list.length}</IonTitle>
-        <IonButton routerLink="/admin/apartments/new" color="success" style={{margin:'20px 0'}}> + Add Apartment</IonButton>
+        <IonButton routerLink="/agent/apartments/new" color="success" style={{margin:'20px 0'}}> + Add Apartment</IonButton>
         {list.map(a=> <div key={a.id} style={{border:'1px solid #ddd', padding:'10px', margin:'5px 0'}}>{a.title} - {a.status}</div>)}
       </IonContent>
     </IonPage>

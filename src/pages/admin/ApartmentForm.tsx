@@ -182,7 +182,10 @@ const ApartmentForm: React.FC = () => {
         if (error) throw error;
       }
 
-      history.replace('/admin');
+        // Simple fix - all agents go to their own dashboard
+    // Admin can still manually go to /admin
+    history.replace('/agent/dashboard');
+
     } catch (err) {
       setToast({ show: true, message: 'Could not save listing. Please try again.', color: 'danger' });
     } finally {
