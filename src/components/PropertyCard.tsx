@@ -1,101 +1,96 @@
-import { IonBadge, IonIcon } from '@ionic/react';
-import { locationOutline, starSharp } from 'ionicons/icons';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
-import type { Apartment } from '../types/database';
-import './PropertyCard.css';
 
 interface Props {
-  apartment: Apartment;
+  apartment: any;
 }
 
-const FALLBACK_IMAGE =
-  'https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=900&q=85';
-
-const formatPrice = (price: number) =>
-  new Intl.NumberFormat('en-NG', { maximumFractionDigits: 0 }).format(price);
+const FALLBACK_IMAGE = "https://via.placeholder.com/400x300?text=No+Image";
 
 const PropertyCard: React.FC<Props> = ({ apartment }) => {
   const history = useHistory();
 
   return (
-    <article
-      className="property-card"
-      onClick={() => history.push(`/apartments/${apartment.id}`)}
-    >
-        {/* AGENT ON TOP - OUTSIDE IMAGE */}
-  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px' }}>
-    <img
-      src={apartment.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${apartment.profiles?.full_name || 'Agent'}&background=random`}
-      alt="agent"
-      style={{
-        width: '26px',
-        height: '26px',
-        borderRadius: '50%',
-        objectFit: 'cover'
-      }}
-    />
-    <span style={{ color: '#333', fontSize: '12px', fontWeight: 600, maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-      {apartment.profiles?.full_name}
-    </span>
-  </div>
+    <div style={{
+      background: '#fff',
+      borderRadius: '12px',
+      overflow: 'hidden',
+      border: '1px solid #eef2f7',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.06)',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      {/* IMAGE - This fixes your stretched image bug */}
+      <div style={{ position: 'relative', width: '100%', height: '210px', background: '#eee' }}>
+        <img
+          src={apartment.image_url || apartment.image_urls?.[0] || FALLBACK_IMAGE}
+          alt={apartment.title}
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
 
-  <div className="property-img" style={{ position: 'relative' }}>
-  <img src={apartment.image_url ?? FALLBACK_IMAGE} alt={apartment.title} />
-  
-  {/* AGENT AVATAR + USERNAME - NEW CODE */}
-  {apartment.profiles && (
-    <div className="property-img" style={{ position: 'relative' }}>
-  <img src={apartment.image_url || FALLBACK_IMAGE} alt={apartment.title} />
-
-  {/* STATUS BADGE - NOW AT BOTTOM */}
-  <div style={{
-  position:'absolute',
-  bottom:'10px',
-  right:'10px',
-  background: apartment.status==='taken' ? '#ff0000' : '#00c853',
-  color:'#fff',
-  padding:'4px 10px',
-  borderRadius:'4px',
-  fontSize:'11px',
-  fontWeight:'bold',
-  textTransform:'uppercase'
-}}>
-  {apartment.status}
-</div>
-
-    </div>
-  )}
-
-  {apartment.featured && <div className="badge featured">Featured</div>}
-  <div className={`badge ${apartment.status?.toLowerCase()}`}>
-    {apartment.status}
-  </div>
-</div>
-
-      <div className="property-body">
-        <h3>{apartment.title}</h3>
-
-        <div className="property-location">
-          <IonIcon icon={locationOutline} />
-          <span>{apartment.location}</span>
+        {/* AGENT - Top Left */}
+        <div style={{
+          position: 'absolute', top: 8, left: 8,
+          background: 'rgba(0,0,0,0.65)', color: '#fff',
+          padding: '3px 8px', borderRadius: '20px',
+          fontSize: '11px', display: 'flex', alignItems: 'center', gap: '5px'
+        }}>
+          <span style={{
+            background: '#dcfce7', color: '#166534', width: '18px', height: '18px',
+            borderRadius: '50%', display: 'grid', placeItems: 'center',
+            fontSize: '9px', fontWeight: 700
+          }}>AG</span>
+          {apartment.profiles?.full_name || 'Pablo Escobar'}
         </div>
 
-        <div className="property-price">
-          ₦{formatPrice(apartment.price)}
-          <small> / {apartment.price_period}</small>
-        </div>
+        {/* STATUS - Top Right */}
+        <span style={{
+          position: 'absolute', top: 8, right: 8,
+          background: apartment.status === 'taken' ? '#ef4444' : '#22c55e',
+          color: '#fff', padding: '4px 10px', borderRadius: '4px',
+          fontSize: '10px', fontWeight: 700
+        }}>
+          {apartment.status || 'available'}
+        </span>
 
-        <div className="property-stars">
-          <IonIcon icon={starSharp} />
-          <IonIcon icon={starSharp} />
-          <IonIcon icon={starSharp} />
-          <IonIcon icon={starSharp} />
-          <IonIcon icon={starSharp} />
-        </div>
-
-        <div className="card-btn" onClick={() => history.push(`/apartments/${apartment.id}`)}>View Details</div>
+        {/* Featured */}
+        {apartment.is_featured && (
+          <span style={{
+            position: 'absolute', bottom: 8, left: 8,
+            background: '#1e293b', color: '#fff',
+            padding: '3px 8px', borderRadius: '4px', fontSize: '10px'
+          }}>Featured</span>
+        )}
       </div>
-    </article>
+
+      {/* CONTENT */}
+      <div style={{ padding: '10px 12px 12px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ fontSize: '14px', fontWeight: 600, lineHeight: '1.3', height: '38px', overflow: 'hidden' }}>
+          {apartment.title}
+        </div>
+
+        <div style={{ fontSize: '11px', color: '#64748b', margin: '6px 0' }}>
+          📍 {apartment.location || apartment.street || 'Calabar'}
+        </div>
+
+        <div style={{ fontWeight: 800, fontSize: '15px', marginBottom: '4px' }}>
+          ₦{Number(apartment.price || 0).toLocaleString()} <span style={{ fontWeight: 400, fontSize: '11px', color: '#64748b' }}>/ year</span>
+        </div>
+
+        <div style={{ color: '#f5b800', fontSize: '12px', marginBottom: '10px' }}>★★★★★</div>
+
+        <button
+          onClick={() => history.push(`/apartments/${apartment.id}`)}
+          style={{
+            marginTop: 'auto', width: '100%', background: '#fff',
+            border: '1.5px solid #f5b800', padding: '8px',
+            borderRadius: '8px', fontSize: '12px', fontWeight: 600, cursor: 'pointer'
+          }}
+        >
+          View Details
+        </button>
+      </div>
+    </div>
   );
 };
 
