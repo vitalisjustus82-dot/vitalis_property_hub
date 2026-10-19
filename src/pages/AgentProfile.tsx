@@ -8,12 +8,13 @@ import PropertyCard from '../components/PropertyCard';
 import './AgentProfile.css';
 
 const AgentProfile: React.FC = () => {
+  const history = useHistory();
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [apartments, setApartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('posts');
-  const history = useHistory();
+
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 const [uploading, setUploading] = useState(false);
@@ -171,15 +172,15 @@ const handleFileChange = async (e: any) => {
             </div>
 
             <div className="fb-card">
-              <div className="fb-card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-  <h3><IonIcon icon={imagesOutline} /> Your Posts ({apartments.length})</h3>
-  <button 
-    onClick={() => history.push('/agent-profile')}
-    style={{ background: '#f5b800', color: '#000', border: 'none', padding: '6px 14px', borderRadius: '20px', fontWeight: 700, fontSize: '13px', cursor: 'pointer' }}
-  >
-    Edit
-  </button>
-</div>
+  <div className="fb-card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <h3><IonIcon icon={imagesOutline} /> Your Posts ({apartments.length})</h3>
+    <button
+      onClick={() => history.push('/agent-profile')}
+      style={{ background: '#f5b800', color: '#000', border: 'none', padding: '6px 14px', borderRadius: '20px', fontWeight: 700, fontSize: '13px', cursor: 'pointer' }}
+    >
+      Edit
+    </button>
+  </div>
               {apartments.length === 0? <p className="no-post">No posts yet. Create your first listing!</p> :
                 <div className="fb-posts-grid">
                   {apartments.map((apt) => <PropertyCard key={apt.id} apartment={apt} />)}
