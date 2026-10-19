@@ -165,10 +165,6 @@ const handleFileChange = async (e: any) => {
           {/* RIGHT - POSTS */}
           <div className="fb-right">
             <div className="fb-card fb-create-post">
-              <div className="fb-create-top">
-                <img src={profile?.avatar_url || `https://ui-avatars.com/api/?name=${profile?.full_name}`} alt="" />
-                <button onClick={() => history.push("/agent/post")}>What's new listing, {profile?.full_name?.split(" ")[0]}?</button>
-              </div>
               <button onClick={() => history.push('/admin/apartments/new')} style={{ background: '#d4af37', width: '100%', padding: '12px', borderRadius: '6px', fontWeight: 800, border: 'none', cursor: 'pointer' }}>
     + POST NEW APARTMENT
 </button>
