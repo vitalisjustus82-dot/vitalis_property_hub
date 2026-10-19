@@ -8,19 +8,19 @@ const ApartmentDetail: React.FC = () => {
   const [apartment, setApartment] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const handleEnquire = async () => {
-  if (!apartment) return;
-  const { data: agent } = await supabase.from('agents').select('*').eq('id', apartment.agent_id).single();
-  const { data: profile } = await supabase.from('profiles').select('phone').eq('id', apartment.agent_id).single();
-  
-  const myNumber = ((profile as any)?.phone || (agent as any)?.phone || '234705959238').replace(/\D/g,'');
-  const msg = `Hello Vitalis! I like this apartment:\n\n ${apartment.title}\n ${apartment.location}\n ₦${apartment.price?.toLocaleString()}\n\n Link: https://vitalis-property-hub-w4a3.vercel.app/apartments/${apartment.id}`;
-  window.open(`https://wa.me/${myNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+  const handleEnquire = () => {
+  const a = apartment as any;
+  const agentName = a.profiles?.full_name || 'Agent';
+  const agentPhone = a.profiles?.phone || '';
+  const agentWhatsapp = a.profiles?.whatsapp_number || a.profiles?.phone || '';
+  const cleanNumber = agentWhatsapp.replace(/\D/g, '');
+  const msg = `Hello ${agentName}, I'm interested in "${a.title}" at ${a.location}.\n\nTitle: ${a.title}\nAgent: ${agentName}\nPhone: ${agentPhone}\nWhatsApp: ${agentWhatsapp}\nPrice: ₦${Number(a.price).toLocaleString()}/year\nLink: https://vitalis-property-hub-wa4a3.vercel.app/apartments/${a.id}`;
+  window.open(`https://wa.me/${cleanNumber}?text=${encodeURIComponent(msg)}`, '_blank');
 };
 
   useEffect(() => {
     const fetchApartment = async () => {
-      const { data } = await supabase.from('apartments').select('*').eq('id', id).single();
+      const { data } = await supabase.from('apartments').select(`*, profiles ( full_name, avatar_url, phone, whatsapp_number )`).eq('id', id).single();
       setApartment(data);
       setLoading(false);
     };
@@ -83,14 +83,26 @@ const ApartmentDetail: React.FC = () => {
             </div>
           </div>
         )}
-
-        {/* WhatsApp */}
-        <a
-          href={`https://wa.me/2347059559238?text=I'm interested in ${apartment.title}`}
-          style={{ display: 'block', textAlign: 'center', marginTop: '24px', background: '#eab308', padding: '16px', borderRadius: '30px', fontWeight: 'bold', color: 'black', textDecoration: 'none' }}
-        >
-          Enquire on WhatsApp
-        </a>
+{/* 3. ENQUIRE ON WHATSAPP */}
+<div style={{ padding: '20px 16px' }}>
+  <button
+    onClick={handleEnquire}
+    style={{
+      width: '100%',
+      background: '#f5b800',
+      color: '#000',
+      padding: '16px',
+      borderRadius: '30px',
+      fontWeight: '700',
+      fontSize: '16px',
+      border: 'none',
+      cursor: 'pointer'
+    }}
+  >
+    Enquire on WhatsApp
+  </button>
+</div>
+       
 
         {/* Extra images gallery - optional under */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', marginTop: '20px' }}>
