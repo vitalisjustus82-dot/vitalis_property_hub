@@ -27,12 +27,12 @@ const AdminDashboard: React.FC = () => {
   const [pendingDelete, setPendingDelete] = useState<Apartment | null>(null);
 
   const load = async () => {
-  const { data } = await supabase
+  const { data } = await (supabase as any)
     .from('apartments')
     .select('*')
     .order('created_at', { ascending: false });
   setApartments(data || []);
-};
+}
 
 const toggleFeatured = async (apt: any) => {
   const featuredCount = apartments.filter((a:any) => a.is_featured).length;
