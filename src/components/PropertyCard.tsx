@@ -22,7 +22,24 @@ const PropertyCard: React.FC<Props> = ({ apartment }) => {
       className="property-card"
       onClick={() => history.push(`/apartments/${apartment.id}`)}
     >
-      <div className="property-img" style={{ position: 'relative' }}>
+        {/* AGENT ON TOP - OUTSIDE IMAGE */}
+  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '8px 12px' }}>
+    <img
+      src={apartment.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${apartment.profiles?.full_name || 'Agent'}&background=random`}
+      alt="agent"
+      style={{
+        width: '26px',
+        height: '26px',
+        borderRadius: '50%',
+        objectFit: 'cover'
+      }}
+    />
+    <span style={{ color: '#333', fontSize: '12px', fontWeight: 600, maxWidth: '120px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+      {apartment.profiles?.full_name}
+    </span>
+  </div>
+
+  <div className="property-img" style={{ position: 'relative' }}>
   <img src={apartment.image_url ?? FALLBACK_IMAGE} alt={apartment.title} />
   
   {/* AGENT AVATAR + USERNAME - NEW CODE */}
@@ -46,20 +63,6 @@ const PropertyCard: React.FC<Props> = ({ apartment }) => {
   {apartment.status}
 </div>
 
-      <img
-      src={apartment.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${apartment.profiles?.full_name || 'Agent'}&background=random`}
-        alt="agent"
-        style={{
-          width: '26px',
-          height: '26px',
-          borderRadius: '50%',
-          objectFit: 'cover',
-          border: '1.5px solid white'
-        }}
-      />
-      <span style={{ color: 'white', fontSize: '11px', fontWeight: 600, maxWidth: '100px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-        {apartment.profiles.full_name}
-      </span>
     </div>
   )}
 
