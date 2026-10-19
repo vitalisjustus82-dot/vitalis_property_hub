@@ -20,6 +20,7 @@ export interface Apartment {
   image_url: string | null;
   video_url: string | null;
   featured: boolean;
+  is_featured?: boolean;
   status: 'available' | 'taken' | 'reserved';
   created_at: string;
   agent_id: string | null;

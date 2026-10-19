@@ -27,14 +27,28 @@ const AdminDashboard: React.FC = () => {
   const [pendingDelete, setPendingDelete] = useState<Apartment | null>(null);
 
   const load = async () => {
-    setLoading(true);
-    const { data, error } = await supabase
-      .from('apartments')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (!error && data) setApartments(data as Apartment[]);
-    setLoading(false);
-  };
+  const { data } = await supabase
+    .from('apartments')
+    .select('*')
+    .order('created_at', { ascending: false });
+  setApartments(data || []);
+};
+
+const toggleFeatured = async (apt: any) => {
+  const featuredCount = apartments.filter((a:any) => a.is_featured).length;
+  if (!apt.is_featured && featuredCount >= 6) {
+    alert('You have 6 already - remove one first');
+    return;
+  }
+  await supabase
+    .from('apartments')
+    await (supabase as any)
+  .from('apartments')
+  .update({ is_featured: !apt.is_featured } as any)
+  .eq('id', apt.id);
+load();
+  load();
+};
 
   useEffect(() => {
     if (session) load();
@@ -111,6 +125,9 @@ const AdminDashboard: React.FC = () => {
                 </div>
               </div>
               <div className="admin-row-actions">
+                <IonButton size="small" color={apt.is_featured ? 'success' : 'medium'} onClick={() => toggleFeatured(apt)}>
+  {apt.is_featured ? '★ On Home' : 'Add to Home'}
+</IonButton>
                 <IonButton
                   fill="clear"
                   onClick={() => history.push(`/admin/apartments/${apt.id}/edit`)}
