@@ -46,13 +46,10 @@ const toggleFeatured = async (apt: any) => {
     alert('You have 6 already - remove one first');
     return;
   }
-  await supabase
+  await (supabase as any)
     .from('apartments')
-    await (supabase as any)
-  .from('apartments')
-  .update({ is_featured: !apt.is_featured } as any)
-  .eq('id', apt.id);
-load();
+    .update({ is_featured: !apt.is_featured })
+    .eq('id', apt.id);
   load();
 };
 
