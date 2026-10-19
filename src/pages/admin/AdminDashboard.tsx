@@ -27,11 +27,17 @@ const AdminDashboard: React.FC = () => {
   const [pendingDelete, setPendingDelete] = useState<Apartment | null>(null);
 
   const load = async () => {
-  const { data } = await (supabase as any)
-    .from('apartments')
-    .select('*')
-    .order('created_at', { ascending: false });
-  setApartments(data || []);
+  try {
+    const { data } = await (supabase as any)
+      .from('apartments')
+      .select('*')
+      .order('created_at', { ascending: false });
+    setApartments(data || []);
+  } catch (e) {
+    console.log(e);
+  } finally {
+    setLoading(false); // <-- this stops the spinner
+  }
 }
 
 const toggleFeatured = async (apt: any) => {
