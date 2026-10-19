@@ -32,20 +32,19 @@ const PropertyCard: React.FC<Props> = ({ apartment }) => {
 
   {/* STATUS BADGE - NOW AT BOTTOM */}
   <div style={{
-    position: 'absolute',
-    bottom: '10px',
-    right: '10px',
-    top: 'auto',
-    backgroundColor: apartment.status === 'taken' ? '#ef4444' : '#22c55e',
-    color: 'white',
-    padding: '4px 10px',
-    borderRadius: '4px',
-    fontSize: '11px',
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    zIndex: 10
-  }}>
-  </div>
+  position:'absolute',
+  bottom:'10px',
+  right:'10px',
+  background: apartment.status==='taken' ? '#ff0000' : '#00c853',
+  color:'#fff',
+  padding:'4px 10px',
+  borderRadius:'4px',
+  fontSize:'11px',
+  fontWeight:'bold',
+  textTransform:'uppercase'
+}}>
+  {apartment.status}
+</div>
 
       <img
       src={apartment.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${apartment.profiles?.full_name || 'Agent'}&background=random`}
