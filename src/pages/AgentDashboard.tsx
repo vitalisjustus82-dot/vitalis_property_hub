@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 // @ts-ignore
-import { supabase } from '../../lib/supabase';
+import { supabase } from '../lib/supabase'
 // @ts-ignore
-import { useRequireAuth } from '../../lib/useRequireAuth';
+import { useRequireAuth } from '../lib/useRequireAuth'
 import './AgentDashboard.css';
 
 const AgentDashboard: React.FC = () => {
-  const  session  = useRequireAuth();
+  const { session } = useRequireAuth();
   const history = useHistory();
   const [apartments, setApartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
