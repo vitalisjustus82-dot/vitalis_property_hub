@@ -174,12 +174,19 @@ const handleFileChange = async (e: any) => {
             <div className="fb-card">
   <div className="fb-card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
     <h3><IonIcon icon={imagesOutline} /> Your Posts ({apartments.length})</h3>
-    <button
-      onClick={() => history.push('/agent-profile')}
-      style={{ background: '#f5b800', color: '#000', border: 'none', padding: '6px 14px', borderRadius: '20px', fontWeight: 700, fontSize: '13px', cursor: 'pointer' }}
-    >
-      Edit
-    </button>
+    <button 
+  onClick={() => history.push('/agent/dashboard')}
+  style={{
+    background: '#facc15',
+    color: '#000',
+    padding: '6px 14px',
+    borderRadius: '20px',
+    fontWeight: 700,
+    border: 'none'
+  }}
+>
+  Edit
+</button>
   </div>
               {apartments.length === 0? <p className="no-post">No posts yet. Create your first listing!</p> :
                 <div className="fb-posts-grid">
