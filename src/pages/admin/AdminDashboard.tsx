@@ -41,18 +41,19 @@ const AdminDashboard: React.FC = () => {
 }
 
 const toggleFeatured = async (apt: any) => {
-  const featuredCount = apartments.filter((a:any) => a.is_featured).length;
-  if (!apt.is_featured && featuredCount >= 6) {
-    alert('You have 6 already - remove one first');
-    return;
-  }
-  await (supabase as any)
+  const { error } = await (supabase as any)
     .from('apartments')
     .update({ is_featured: !apt.is_featured })
     .eq('id', apt.id);
-  load();
-};
 
+  if (!error) {
+    setApartments(prev => prev.map(p => 
+      p.id === apt.id ? { ...p, is_featured: !p.is_featured } : p
+    ));
+  } else {
+    console.log(error);
+  }
+};
   useEffect(() => {
     if (session) load();
   }, [session]);

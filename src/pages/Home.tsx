@@ -37,16 +37,17 @@ import './Home.css';
   }, []);
 
     useEffect(() => {
-    const fetchFeatured = async () => {
-      const { data } = await supabase
-  .from('apartments')
-  .select('*, profiles(full_name, avatar_url, username)')
-  .eq('is_featured', true).limit(6)
-  .limit(6)
-  .order('created_at', { ascending: false })
-      if (data) setFeatured(data as any);
-      setLoading(false);
-    };
+      const fetchFeatured = async () => {
+  const { data } = await (supabase as any)
+    .from('apartments')
+    .select('*, profiles(full_name, avatar_url, username)')
+    .eq('is_featured', true)
+    .limit(6)
+    .order('created_at', { ascending: false })
+  
+  if (data) setFeatured(data as any);
+  setLoading(false);
+}
     fetchFeatured();
   }, []);
   return (
