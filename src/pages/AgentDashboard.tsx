@@ -30,10 +30,6 @@ const AgentDashboard: React.FC = () => {
   return (
     <div className="agent-page">
       <div className="agent-header">
-        <div>
-          <h1>My Listings</h1>
-          <p>{apartments.length} {apartments.length === 1 ? 'property' : 'properties'} active</p>
-        </div>
         <span className="count-badge">{apartments.length}</span>
       </div>
 
