@@ -35,12 +35,19 @@ const PropertyCard: React.FC<Props> = ({ apartment }) => {
           padding: '3px 8px', borderRadius: '20px',
           fontSize: '11px', display: 'flex', alignItems: 'center', gap: '5px'
         }}>
-          <span style={{
-            background: '#dcfce7', color: '#166534', width: '18px', height: '18px',
-            borderRadius: '50%', display: 'grid', placeItems: 'center',
-            fontSize: '9px', fontWeight: 700
-          }}>AG</span>
-          {apartment.profiles?.full_name || 'Pablo Escobar'}
+          {/* AGENT PROFILE PICTURE */}
+<img
+  src={apartment.profiles?.avatar_url || `https://ui-avatars.com/api/?name=${apartment.profiles?.full_name || 'AG'}&background=dcfce7&color=166534`}
+  alt="agent"
+  style={{
+    width: '22px',
+    height: '22px',
+    borderRadius: '50%',
+    objectFit: 'cover',
+    border: '1px solid #fff'
+  }}
+/>
+{apartment.profiles?.full_name || 'Pablo Escobar'}
         </div>
 
         {/* STATUS - Top Right */}
