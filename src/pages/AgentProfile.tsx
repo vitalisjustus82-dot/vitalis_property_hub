@@ -177,20 +177,6 @@ const handleFileChange = async (e: any) => {
   <div style={{ fontWeight: 700, fontSize: '18px' }}>
     Your Posts ({apartments.length})
   </div>
-  <button 
-    onClick={() => history.push('/agent/dashboard')}
-    style={{ 
-      background: '#facc15', 
-      color: '#000', 
-      padding: '6px 14px', 
-      borderRadius: '20px', 
-      fontWeight: 700,
-      border: 'none',
-      cursor: 'pointer'
-    }}
-  >
-    Edit
-  </button>
 </div>
               {apartments.length === 0? <p className="no-post">No posts yet. Create your first listing!</p> :
                 <div className="fb-posts-grid">
