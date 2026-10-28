@@ -9,13 +9,32 @@ const ApartmentDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   const handleEnquire = () => {
-  const a = apartment as any;
-  const agentName = a.profiles?.full_name || 'Agent';
-  const agentPhone = a.profiles?.phone || '';
-  const agentWhatsapp = a.profiles?.whatsapp_number || a.profiles?.phone || '';
-  const cleanNumber = agentWhatsapp.replace(/\D/g, '');
-  const msg = `Hello ${agentName}, I'm interested in "${a.title}" at ${a.location}.\n\nTitle: ${a.title}\nAgent: ${agentName}\nPhone: ${agentPhone}\nWhatsApp: ${agentWhatsapp}\nPrice: ₦${Number(a.price).toLocaleString()}/year\nLink: https://vitalis-property-hub-wa4a3.vercel.app/apartments/${a.id}`;
-  window.open(`https://wa.me/${cleanNumber}?text=${encodeURIComponent(msg)}`, '_blank');
+  if (!apartment) return;
+
+  // 1. Get agent info - this comes from your Supabase JOIN
+  // Check your schema - it might be apartment.profiles or apartment.agent
+  const agent = (apartment as any).profiles || (apartment as any).agent;
+  
+  const agentUsername = agent?.username || agent?.full_name || 'Agent';
+  const rawPhone = agent?.whatsapp_number || agent?.phone_number || agent?.phone || apartment.phone_number;
+
+  if (!rawPhone) {
+    alert("Agent WhatsApp number not found for this apartment");
+    return;
+  }
+
+  // 2. Clean phone number to 234 format
+  let cleanNumber = rawPhone.toString().replace(/\D/g, ""); // remove + , spaces
+  if (cleanNumber.startsWith("0")) {
+    cleanNumber = "234" + cleanNumber.slice(1);
+  }
+
+  // 3. Message with title, username, phone
+  const message = `Hello ${agentUsername},\n\nI'm interested in this apartment from Vitalis Property Hub:\n\n*Title:* ${apartment.title}\n*Price:* ${apartment.price}\n*Location:* ${apartment.location}\n*Agent Username:* ${agentUsername}\n*Agent Number:* ${rawPhone}\n*Link:* https://vitalis-property-hub-w4a3.vercel.app/apartments/${apartment.id}\n\nIs it still available?`;
+
+  const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
+  
+  window.open(whatsappUrl, "_blank");
 };
 
   useEffect(() => {
