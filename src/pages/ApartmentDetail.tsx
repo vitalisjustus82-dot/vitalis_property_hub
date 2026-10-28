@@ -30,7 +30,7 @@ const ApartmentDetail: React.FC = () => {
   }
 
   // 3. Message with title, username, phone
-  const message = `Hello ${agentUsername},\n\nI'm interested in this apartment from Vitalis Property Hub:\n\n*Title:* ${apartment.title}\n*Price:* ${apartment.price}\n*Location:* ${apartment.location}\n*Agent Username:* ${agentUsername}\n*Agent Number:* ${rawPhone}\n*Link:* https://vitalis-property-hub-w4a3.vercel.app/apartments/${apartment.id}\n\nIs it still available?`;
+  const message = `Hello Vitalis,\n\nI'm interested in this apartment from Vitalis Property Hub:\n\n*Title:* ${apartment.title}\n*Price:* ${apartment.price}\n*Location:* ${apartment.location}\n*Agent Username:* ${agentUsername}\n*Agent Number:* ${rawPhone}\n*Link:* https://vitalis-property-hub-w4a3.vercel.app/apartments/${apartment.id}\n\nIs it still available?`;
 
   const whatsappUrl = `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}`;
   
