@@ -184,7 +184,7 @@ const ApartmentForm: React.FC = () => {
 
         // Simple fix - all agents go to their own dashboard
     // Admin can still manually go to /admin
-    history.push('/agent/dashboard');
+    history.push('/agent/profile');
 window.location.reload(); // force it to show new apartment instantly
 
     } catch (err) {
