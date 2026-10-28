@@ -184,7 +184,8 @@ const ApartmentForm: React.FC = () => {
 
         // Simple fix - all agents go to their own dashboard
     // Admin can still manually go to /admin
-    history.replace('/agent/dashboard');
+    history.push('/agent/dashboard');
+window.location.reload(); // force it to show new apartment instantly
 
     } catch (err) {
       setToast({ show: true, message: 'Could not save listing. Please try again.', color: 'danger' });
