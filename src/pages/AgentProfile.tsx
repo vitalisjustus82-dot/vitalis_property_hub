@@ -7,6 +7,7 @@ import PropertyCard from '../components/PropertyCard';
 // @ts-ignore
 import './AgentProfile.css';
 
+
 const AgentProfile: React.FC = () => {
   const history = useHistory();
   const [user, setUser] = useState<any>(null);
@@ -175,7 +176,7 @@ const handleFileChange = async (e: any) => {
   <div className="fb-card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
     <h3><IonIcon icon={imagesOutline} /> Your Posts ({apartments.length})</h3>
     <button 
-  onClick={() => history.push('/agent/dashboard')}
+  onClick={() => history.push(`/agent/dashboard?edit=${apartments[0]?.id}`)}
   style={{
     background: '#facc15',
     color: '#000',

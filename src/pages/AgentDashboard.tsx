@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 // @ts-ignore
-import { supabase } from '../lib/supabase'
+import { supabase } from '../lib/supabase';
 // @ts-ignore
 import { useRequireAuth } from '../lib/useRequireAuth'
 import './AgentDashboard.css';
+import { useIonViewWillEnter } from '@ionic/react';
 
 const AgentDashboard: React.FC = () => {
   const { session } = useRequireAuth();
@@ -12,19 +13,28 @@ const AgentDashboard: React.FC = () => {
   const [apartments, setApartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const load = async () => {
+  // THIS FIXES THE REFRESH BUG
+  useIonViewWillEnter(() => {
+    fetchMyApartments();
+  });
+
+  const fetchMyApartments = async () => {
+    // Example:
     if (!session) return;
+    setLoading(true);
     const { data } = await (supabase as any)
       .from('apartments')
       .select('*')
-      .eq('agent_id', session.user.id)
-      .order('created_at', { ascending: false });
+      .eq('user_id', session.user.id);
     setApartments(data || []);
     setLoading(false);
-  };
+  }
 
-  useEffect(() => { if(session) load(); }, [session]);
+  useEffect(() => {
+    fetchMyApartments();
+  }, [session]);
 
+  // ... rest of your return() stays same
   if (loading) return <div className="agent-loading">Loading listings...</div>;
 
   return (
