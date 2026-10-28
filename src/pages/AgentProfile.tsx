@@ -173,22 +173,25 @@ const handleFileChange = async (e: any) => {
             </div>
 
             <div className="fb-card">
-  <div className="fb-card-head" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-    <h3><IonIcon icon={imagesOutline} /> Your Posts ({apartments.length})</h3>
-    <button 
-  onClick={() => history.push(`/agent/dashboard?edit=${apartments[0]?.id}`)}
-  style={{
-    background: '#facc15',
-    color: '#000',
-    padding: '6px 14px',
-    borderRadius: '20px',
-    fontWeight: 700,
-    border: 'none'
-  }}
->
-  Edit
-</button>
+  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+  <div style={{ fontWeight: 700, fontSize: '18px' }}>
+    Your Posts ({apartments.length})
   </div>
+  <button 
+    onClick={() => history.push('/agent/dashboard')}
+    style={{ 
+      background: '#facc15', 
+      color: '#000', 
+      padding: '6px 14px', 
+      borderRadius: '20px', 
+      fontWeight: 700,
+      border: 'none',
+      cursor: 'pointer'
+    }}
+  >
+    Edit
+  </button>
+</div>
               {apartments.length === 0? <p className="no-post">No posts yet. Create your first listing!</p> :
                 <div className="fb-posts-grid">
                   {apartments.map((apt) => <PropertyCard key={apt.id} apartment={apt} />)}
