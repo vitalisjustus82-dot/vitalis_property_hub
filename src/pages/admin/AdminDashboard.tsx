@@ -40,19 +40,18 @@ const AdminDashboard: React.FC = () => {
   }
 }
 
-const toggleFeatured = async (apt: any) => {
-  const { error } = await (supabase as any)
-    .from('apartments')
-    .update({ is_featured: !apt.is_featured })
-    .eq('id', apt.id);
+const toggleFeatured = async (id: string) => {
+  const current = apartments.find(a => a.id === id);
+  if (!current) return;
+  const newValue = !current.is_featured;
 
-  if (!error) {
-    setApartments(prev => prev.map(p => 
-      p.id === apt.id ? { ...p, is_featured: !p.is_featured } : p
-    ));
-  } else {
-    console.log(error);
-  }
+  const { error } = await (supabase.from('apartments') as any)
+  .update({ is_featured: newValue })
+  .eq('id', id);
+
+if (!error) {
+  setApartments(prev => prev.map(a => a.id === id ? { ...a, is_featured: newValue } : a));
+}
 };
   useEffect(() => {
     if (session) load();
@@ -129,7 +128,7 @@ const toggleFeatured = async (apt: any) => {
                 </div>
               </div>
               <div className="admin-row-actions">
-                <IonButton size="small" color={apt.is_featured ? 'success' : 'medium'} onClick={() => toggleFeatured(apt)}>
+                <IonButton size="small" color={apt.is_featured ? 'success' : 'medium'} onClick={() => toggleFeatured(apt.id)}>
   {apt.is_featured ? '★ On Home' : 'Add to Home'}
 </IonButton>
                 <IonButton
