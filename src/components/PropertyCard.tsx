@@ -53,21 +53,12 @@ const PropertyCard: React.FC<Props> = ({ apartment }) => {
         {/* STATUS - Top Right */}
         <span style={{
   position: 'absolute', bottom: 8, right: 8,
-  background: apartment.status === 'taken' ? '#ef4444' : '#22c55e',
+  background: apartment.status === 'taken' ? '#1e293b' : '#1e293b',
   color: '#fff', padding: '4px 10px', borderRadius: '4px',
   fontSize: '10px', fontWeight: 700
 }}>
   {apartment.status || 'available'}
 </span>
-
-        {/* Featured */}
-        {apartment.is_featured && (
-          <span style={{
-            position: 'absolute', bottom: 8, left: 8,
-            background: '#1e293b', color: '#fff',
-            padding: '3px 8px', borderRadius: '4px', fontSize: '10px'
-          }}>Featured</span>
-        )}
       </div>
 
       {/* CONTENT */}
