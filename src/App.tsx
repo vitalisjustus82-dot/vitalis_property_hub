@@ -30,6 +30,7 @@ import AgentSignup from "./pages/AgentSignup";
 import AgentDashboard from "./pages/AgentDashboard";
 import AgentProfile from "./pages/AgentProfile";
 import ApartmentForm from "./pages/admin/ApartmentForm";
+import AgentEntry from './pages/AgentEntry';
 
 setupIonicReact({
   mode: "md",
@@ -56,6 +57,7 @@ const App: React.FC = () => (
           <Route exact path="/agent/login" component={AgentLogin} />
           <Route exact path="/agent/signup" component={AgentSignup} />
           <Route exact path="/agent/profile" component={AgentProfile} />
+          <Route exact path="/agent-entry" component={AgentEntry} />
           <Route exact path="/agent/dashboard" component={AgentDashboard} />
           <Route exact path="/">
             <Redirect to="/home" />

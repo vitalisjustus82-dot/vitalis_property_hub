@@ -2,10 +2,17 @@ import { supabase } from '../lib/supabase';
 import React, { useState } from 'react';
 import { IonPage, IonContent } from '@ionic/react';
 
+
+
 const AgentLogin: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+
+  if (!localStorage.getItem('isAgentPortal')) {
+  window.location.href = '/home';
+  return null;
+}
 
   const handleLogin = async () => {
     if (!email || !password) { alert('Enter email and password'); return; }

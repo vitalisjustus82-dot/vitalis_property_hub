@@ -13,6 +13,10 @@ const AgentSignup: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const history = useHistory();
 
+  if (!localStorage.getItem('isAgentPortal')) {
+  window.location.href = '/home';
+  return null;
+}
   const handleSignup = async () => {
   if (!fullName || !phone || !email || !password) {
     alert('Please fill all fields'); return;
