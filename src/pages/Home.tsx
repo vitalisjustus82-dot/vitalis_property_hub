@@ -38,16 +38,17 @@ import './Home.css';
 
     useEffect(() => {
       const fetchFeatured = async () => {
-  const { data } = await (supabase as any)
-  .from('apartments')
-  .select('*')
-  .eq('is_featured', true).neq('is_featured', null)
-  .limit(6)
-  .order('created_at', { ascending: false })
+  const { data, error } = await (supabase as any)
+    .from('apartments')
+    .select('*')
+    .eq('is_featured', true)
+    .order('created_at', { ascending: false })
+    .limit(6);
   
+  console.log('FEATURED DATA:', data, 'ERROR:', error);
   if (data) setFeatured(data as any);
   setLoading(false);
-}
+};
     fetchFeatured();
   }, []);
   return (
