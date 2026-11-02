@@ -60,7 +60,7 @@ import './Home.css';
           right: '15px',
           zIndex: 100
         }}>
-          {!user ? (
+         {localStorage.getItem('isAgentPortal') && !user ? (
             <div style={{ display: 'flex', gap: '8px' }}>
               <button onClick={() => history.push('/agent/login')} style={{ background: 'transparent', color: 'white', border: '1px solid #c9a86a', padding: '7px 16px', borderRadius: '20px', fontWeight: 700, fontSize: '12px', cursor: 'pointer' }}>Login</button>
               <button onClick={() => history.push('/agent/signup')} style={{ background: '#d4af37', color: 'black', border: 'none', padding: '7px 18px', borderRadius: '20px', fontWeight: 800, fontSize: '12px', cursor: 'pointer' }}>Register</button>

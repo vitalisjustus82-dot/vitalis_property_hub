@@ -81,10 +81,12 @@ const App: React.FC = () => (
             <IonIcon aria-hidden="true" icon={callOutline} />
             <IonLabel>Contact</IonLabel>
           </IonTabButton>
-                  <IonTabButton tab="profile" href="/agent/profile">
-          <IonIcon aria-hidden="true" icon={personOutline} />
-          <IonLabel>Profile</IonLabel>
-        </IonTabButton>
+                      {localStorage.getItem('isAgentPortal') && (
+      <IonTabButton tab="profile" href="/agent/profile">
+        <IonIcon aria-hidden="true" icon={personOutline} />
+        <IonLabel>Profile</IonLabel>
+      </IonTabButton>
+    )}
         </IonTabBar>
       </IonTabs>
     </IonReactRouter>
