@@ -39,11 +39,11 @@ import './Home.css';
     useEffect(() => {
       const fetchFeatured = async () => {
   const { data } = await (supabase as any)
-    .from('apartments')
-    .select('*, profiles(full_name, avatar_url, username)')
-    .eq('is_featured', true)
-    .limit(6)
-    .order('created_at', { ascending: false })
+  .from('apartments')
+  .select('*')
+  .eq('is_featured', true)
+  .limit(6)
+  .order('created_at', { ascending: false })
   
   if (data) setFeatured(data as any);
   setLoading(false);
