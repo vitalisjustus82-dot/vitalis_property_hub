@@ -41,7 +41,7 @@ import './Home.css';
   const { data } = await (supabase as any)
   .from('apartments')
   .select('*')
-  .eq('is_featured', true)
+  .eq('is_featured', true).neq('is_featured', null)
   .limit(6)
   .order('created_at', { ascending: false })
   
