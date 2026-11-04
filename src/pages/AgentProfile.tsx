@@ -156,13 +156,18 @@ const handleFileChange = async (e: any) => {
             </div>
 
             <div className="fb-card">
-              <div className="fb-card-head"><h3>Photos • {apartments.length}</h3><span>See all</span></div>
-              <div className="fb-photo-grid">
-                {apartments.slice(0, 6).map((apt, i) => (
-                  <img key={i} src={apt.media_urls?.[0] || 'https://via.placeholder.com/300'} alt="" />
-                ))}
-              </div>
-            </div>
+  <div className="fb-card-head"><h3>Photos • {apartments.length}</h3><span>See all</span></div>
+  <div className="fb-photo-grid">
+    {apartments.flatMap((apt: any) => {
+      // Try every possible field name - one of them go hold the real image
+      const raw = apt.media_urls || apt.images || apt.image_urls || apt.photos || apt.image_url || apt.cover_image || apt.main_image || [];
+      const list = Array.isArray(raw) ? raw : [raw];
+      return list.filter(Boolean).map((src: string) => ({ src, id: apt.id }));
+    }).slice(0, 6).map((photo, i) => (
+      <img key={`${photo.id}-${i}`} src={photo.src} alt="" onClick={() => history.push(`/apartment/${photo.id}`)} style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', cursor: 'pointer' }} />
+    ))}
+  </div>
+</div>
           </div> 
           {/* RIGHT - POSTS */}
           <div className="fb-right">
