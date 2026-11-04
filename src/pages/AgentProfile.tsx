@@ -13,6 +13,7 @@ const AgentProfile: React.FC = () => {
   const [user, setUser] = useState<any>(null);
   const [profile, setProfile] = useState<any>(null);
   const [apartments, setApartments] = useState<any[]>([]);
+  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('posts');
 
@@ -164,7 +165,7 @@ const handleFileChange = async (e: any) => {
       const list = Array.isArray(raw) ? raw : [raw];
       return list.filter(Boolean).map((src: string) => ({ src, id: apt.id }));
     }).slice(0, 6).map((photo, i) => (
-      <img key={`${photo.id}-${i}`} src={photo.src} alt="" onClick={() => history.push(`/apartment/${photo.id}`)} style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', cursor: 'pointer' }} />
+      <img key={`${photo.id}-${i}`} src={photo.src} alt="" onClick={() => setSelectedPhoto(photo.src)} style={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', cursor: 'pointer' }} />
     ))}
   </div>
 </div>
@@ -192,6 +193,29 @@ const handleFileChange = async (e: any) => {
           </div>
         </div>
 )}
+
+{selectedPhoto && (
+  <div
+    onClick={() => setSelectedPhoto(null)}
+    style={{
+      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
+      background: 'rgba(0,0,0,0.9)', zIndex: 9999,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+    }}
+  >
+    <button
+      onClick={() => setSelectedPhoto(null)}
+      style={{ position: 'absolute', top: '15px', right: '15px', background: 'white', border: 'none', borderRadius: '50%', width: '35px', height: '35px', fontSize: '20px', cursor: 'pointer' }}
+    >✕</button>
+    <img
+      src={selectedPhoto}
+      alt="Full view"
+      onClick={(e) => e.stopPropagation()}
+      style={{ maxWidth: '95%', maxHeight: '90%', objectFit: 'contain' }}
+    />
+  </div>
+)}
+
       </IonContent>
     </IonPage>
 
